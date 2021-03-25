@@ -4,14 +4,19 @@
 
 |End Point|Request Body|Response Body|Response Status|Method Type|
 |-------|-----------|-----------|-------------|---------|
-|/api/adminLogin|{username, password}|{message}|401 - Failure, 200 - Success|POST
-|/api/userLogin|{username, password}|{message}|401 - Failure, 200 - Success|POST
-|/api/accounts/{serviceId}||[{id,name,amount,date,type,serviceId}]|500 - Failure, 200 - Success| GET|
-|/api/accounts||[{id,name,amount,date,type,serviceId}]|500 - Failure, 200 - Success| GET|
-|/api/services||[{id,name}]|500 - Failure, 200 Success| GET
-|/api/create/{serviceId}|{name,type}|{id,name,amount,date,type,serviceId}|500 - Failure, 200 - Succcess | POST
-|/api/update/{serviceId}|{accountId,name}|{id,name,amount,date,type,serviceId}|500 - Failure, 200 - Success | PATCH
-|/api/delete/{serviceId}|{accountId}|{message}|500 - Failure, 200 - Success | DELETE
+|/api/auth/adminLogin|{username, password}|{message}|401 - Failure, 200 - Success|POST
+|/api/auth/moderatorLogin|{username, password}|{message}|401 - Failure, 200 - Success|POST
+|/api/auth/adminChangePassword/{adminName}|{oldPassword,newPassword}|{message}|401 - Failure, 200 - Success|PATCH
+|/api/auth/moderatorChangePassword/{moderatorName}|{oldPassword,newPassword}|{message}|401 - Failure, 200 - Success|PATCH
+|/api/auth/adminForgotPassword/{adminName}||{message}|401 - Failure, 200 - Success|GET
+|/api/auth/moderatorForgotPassword/{moderatorName}||{message}|401 - Failure, 200 - Success|GET
+/api/accounts||[{id,name,amount,date,type,{name,description}}]|500 - Failure, 200 - Success| GET|
+|/api/accounts/{partner}||[{id,name,amount,date,type,{name,description}}]|500 - Failure, 200 - Success| GET|
+|/api/accounts/create/{partner}|{name,type}|{id,name,amount,date,type,{name,description}}|500 - Failure, 200 - Succcess | POST
+|/api/accounts/update/{partner}/{customerId}|{name,type}|{id,name,amount,date,type,{name,description}}|500 - Failure, 200 - Success | PATCH
+|/api/accounts/delete/{serviceId}/{customerId}||{message}|500 - Failure, 200 - Success | DELETE
+|/api/services||[{name,description}]|500 - Failure, 200 Success| GET
+|/api/services/{partner}||{name,description}|404 - Failure, 200 Success| GET
 
 ## Database Schema 
 
