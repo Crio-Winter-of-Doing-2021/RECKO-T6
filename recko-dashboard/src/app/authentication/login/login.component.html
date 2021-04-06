@@ -1,0 +1,61 @@
+<div class="jumbotron meme-jumbotron">
+
+    <h1 class="text-capitalize text-center font-weight-bolder">Login Form</h1>
+
+    <form #loginForm="ngForm" *ngIf="!isLoading; else processing">
+
+        <div class="form-group">
+            <label for="username" class="text-capitalize font-weight-bolder">Username</label>
+            <input type="text" class="form-control" id="username" required placeholder="Enter Your Username"
+                name="username" [(ngModel)]="operator.username" #username="ngModel">
+
+            <div *ngIf="username.touched && username.invalid">
+                <div class="alert alert-danger text-capitalize" *ngIf="username.errors.required">
+                    Username is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="text-capitalize font-weight-bolder">Password</label>
+            <input type="password" class="form-control" id="password" required placeholder="Enter Your Password"
+                name="password" [(ngModel)]="operator.password" #password="ngModel">
+
+            <div *ngIf="password.touched && password.invalid">
+                <div class="alert alert-danger text-capitalize" *ngIf="password.errors.required">
+                    Password is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="operatorType" id="adminOperator" value="admin" checked
+                [(ngModel)]="operatorType">
+            <label class="form-check-label" for="adminOperator">
+                I am an Admin
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="operatorType" id="modOperator" value="moderator"
+                [(ngModel)]="operatorType">
+            <label class="form-check-label" for="modOperator">
+                I am a Moderator
+            </label>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Login" [disabled]="loginForm.pristine || loginForm.invalid"
+            (click)="loginOperator()">
+        &nbsp;
+
+        <input type="button" class="btn btn-danger" value="Cancel" (click)="cancelLogin()">
+        &nbsp;
+
+        <input type="reset" class="btn btn-warning" value="Reset">
+        &nbsp;
+    </form>
+
+    <ng-template #processing>
+        <app-loading></app-loading>
+    </ng-template>
+</div>

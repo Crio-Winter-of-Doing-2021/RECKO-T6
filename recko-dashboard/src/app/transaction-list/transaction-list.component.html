@@ -1,0 +1,50 @@
+<div class="jumbotron">
+    <h1 class="display-4 text-capitalize text-center">
+        Recko Transaction List
+    </h1>
+
+    <hr class="my-4">
+
+    <!-- <div class="text-center">
+        <button class="btn btn-lg btn-primary">Add Transaction</button>
+    </div> -->
+
+    <div class="form-group">
+        <label for="partner" class="font-weight-bolder text-capitallize">Choose Recko Partner</label>
+        <select class="form-control" id="partner" name="partner" [(ngModel)]="selectedPartner"
+            (change)="fetchPartnerTransactions()">
+            <option *ngFor="let partner of partners" [value]="partner.name">
+                {{partner.description}}
+            </option>
+        </select>
+    </div>
+
+    <table class="table" *ngIf="contentLoaded === 2; else contentLoading">
+        <thead>
+            <th class="clickable-head" (click)="changeHolderOrder()">Payer</th>
+            <th class="clickable-head" (click)="changeReceiverOrder()">Receiver</th>
+            <th>Date</th>
+            <th class="clickable-head" (click)="changeTypeOrder()">Payment Type</th>
+            <th class="clickable-head" (click)="changeAmountOrder()">Payment Amount</th>
+            <th class="clickable-head" (click)="changePartnerOrder()">Recko Partner</th>
+            <th>Recko Associated Email</th>
+        </thead>
+        <tbody>
+            <app-transaction *ngFor="let transaction of transactions | paginate: {
+                id: 'transaction-pagination',
+                itemsPerPage: itemsPerPage,
+                currentPage : currentPage,
+                totalItems :  transactions.length}" [tran]="transaction"></app-transaction>
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <pagination-controls id="transaction-pagination" [maxSize]="maxPaginationSize" directionLinks="true"
+            (pageChange)="currentPage = $event"></pagination-controls>
+    </div>
+
+    <ng-template #contentLoading>
+        <app-loading></app-loading>
+    </ng-template>
+
+</div>

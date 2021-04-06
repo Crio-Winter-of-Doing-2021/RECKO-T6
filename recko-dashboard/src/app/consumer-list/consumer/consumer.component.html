@@ -1,0 +1,15 @@
+<ng-template #consumerRef>
+    <tr class="text-capitalize">
+        <td>{{consumer.name}}</td>
+        <td>{{consumer.date | date: "shortDate"}}</td>
+        <td>{{consumer.type}}</td>
+        <td>{{consumer.amount}}</td>
+        <td>{{consumer.credential.partner.name}}</td>
+        <td>
+            <button class="btn btn-sm btn-warning" (click)="redirectUpdate()">Update</button>
+            &nbsp;
+            <button *ngIf="isAdminAuthenticated()" class="btn btn-sm btn-danger"
+                (click)="deleteConsumer()">Delete</button>
+        </td>
+    </tr>
+</ng-template>

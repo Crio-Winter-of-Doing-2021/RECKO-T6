@@ -1,0 +1,11 @@
+<ng-template #tranTemplate>
+    <tr>
+        <td>{{transaction.holderName}}</td>
+        <td>{{transaction.receiver}}</td>
+        <td>{{transaction.date | date: "shortDate"}}</td>
+        <td>{{transaction.type}}</td>
+        <td>{{transaction.amount}}</td>
+        <td class="text-capitalize">{{transaction.credential.partner.name}}</td>
+        <td>{{transaction.credential.email}}</td>
+    </tr>
+</ng-template>

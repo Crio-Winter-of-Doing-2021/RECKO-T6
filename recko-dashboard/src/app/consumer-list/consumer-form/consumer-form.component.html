@@ -1,0 +1,100 @@
+<div class="jumbotron">
+    <form class="form" #consumerForm="ngForm" *ngIf="!isLoading else processing">
+        <h1 class="text-capitalize text-center font-weight-bolder">
+            {{ consumer.id === null ? "Add New" : "Update"}} Consumer
+        </h1>
+
+        <div class="form-group" *ngIf="consumer.id === null; else immutablePartner">
+            <label class="text-capitalize font-weight-bolder" for="partner-dropdown">Choose Recko Partner</label>
+            <select class="form-control" id="partner-dropdown" required name="partner-dropdown"
+                [(ngModel)]="selectedPartner" (change)="fetchAccountTypes()" #partner="ngModel">
+                <option *ngFor="let partner of  partners" [value]="partner.name">
+                    {{partner.description}}
+                </option>
+            </select>
+
+            <div *ngIf="partner.touched && partner.invalid">
+                <div class="alert alert-danger text-capitalize" *ngIf="partner.errors.required">
+                    partner name must be selected
+                </div>
+            </div>
+        </div>
+
+        <ng-template #immutablePartner>
+            <div class="form-group">
+                <label for="immutablePartner" class="text-capitalize font-weight-bolder">Recko Partner</label>
+                <input type="text" class="form-control" readonly [value]="consumer.credential.partner.description">
+            </div>
+        </ng-template>
+
+        <div class="form-group">
+            <label for="name" class="text-capitalize font-weight-bolder">Consumer Name</label>
+            <input type="text" class="form-control" id="name" required name="name" [(ngModel)]="consumer.name"
+                #name="ngModel">
+
+            <div *ngIf="name.touched && name.invalid">
+                <div class="alert alert-danger text-capitalize" *ngIf="name.errors.required">
+                    consumer name is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="consumer.id === null">
+            <label for="type" class="text-capitalize font-weight-bolder">Account Type</label>
+            <select class="form-control text-capitalize" id="type" required name="type"
+                [(ngModel)]="selectedAccountType" #type="ngModel">
+                <option class="text-capitalize" *ngFor="let type of accountTypes" [value]="type">
+                    {{type}}
+                </option>
+            </select>
+
+            <div *ngIf="type.touched && type.invalid">
+                <div class="alert alert-danger" *ngIf="type.errors.required">
+                    account type is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="selectedPartner !== null">
+            <div class="form-group">
+                <label for="partnerEmail" class="text-capitalize font-weight-bolder">Partner Email Address</label>
+                <input type="text" class="form-control" id="partnerEmail" required placeholder="Enter Email Address"
+                    [readonly]="consumer.id !== null" name="partnerEmail" [(ngModel)]="consumer.credential.email"
+                    #partnerEmail="ngModel">
+
+                <div *ngIf="consumer.id === null && partnerEmail.touched && partnerEmail.invalid">
+                    <div *ngIf="partnerEmail.errors.required" class="alert alert-danger text-capitalize">
+                        Email is Mandatory
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="partnerPass" class="text-capitalize font-weight-bolder">Parnter Password</label>
+                <input type="password" class="form-control" id="partnerPass" required placeholder="Enter Password"
+                    [readonly]="consumer.id !== null" name="partnerPass" [(ngModel)]="consumer.credential.password"
+                    #partnerPass="ngModel">
+
+                <div *ngIf="consumer.id === null && partnerPass.touched && partnerPass.invalid">
+                    <div *ngIf="partnerPass.errors.required" class="alert alert-danger text-capitalize">
+                        Password is mandatory
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" class="btn btn-primary" [disabled]="consumerForm.pristine || consumerForm.invalid"
+            [value]="submitButtonValue()" (click)="submitConsumer()">
+        &nbsp;
+
+        <input type="button" class="btn btn-danger" (click)="cancelAddConsumer()" value="Cancel">
+        &nbsp;
+
+        <input type="reset" class="btn btn-warning" value="Reset">
+    </form>
+
+    <ng-template #processing>
+        <app-loading></app-loading>
+    </ng-template>
+
+</div>

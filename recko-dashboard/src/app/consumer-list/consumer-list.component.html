@@ -1,0 +1,50 @@
+<div class="jumbotron">
+    <h1 class="text-center">Recko Account Integration Dashboard</h1>
+    <div class="text-center">
+        <a class="btn btn-lg btn-primary" routerLink="/consumer-form">Add Account</a>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label class="text-capitalize font-weight-bolder" for="partner-dropdown">Choose Recko Partner</label>
+        <select class="form-control" id="partner-dropdown" [(ngModel)]="selectedPartner"
+            (change)="filterPartnerConsumers()">
+            <option *ngFor="let partner of partners" [value]="partner.name">
+                {{partner.description}}
+            </option>
+        </select>
+    </div>
+
+    <h3 class="text-capitlize text-center">Recko Consumer List</h3>
+    <br>
+    <table class="table" *ngIf="loadedContent == 2; else contentLoading">
+        <thead>
+            <tr>
+                <th class="clickable-head" (click)="changeHolderOrder()">Holder Name</th>
+                <th>Creation Date</th>
+                <th class="clickable-head" (click)="changeTypeOrder()">Type</th>
+                <th class="clickable-head" (click)="changeAmountOrder()">Balance</th>
+                <th class="clickable-head" (click)="changeProviderOrder()">Service Provider</th>
+                <th>Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+            <app-consumer *ngFor="let consumer of consumers | paginate : {
+                id: 'consumer-pagination',
+                itemsPerPage : itemsPerPage,
+                currentPage : currentPage,
+                totalItems : consumers.length
+            }" [consumer]="consumer" (delete)="deleteConsumer($event)">
+            </app-consumer>
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <pagination-controls id="consumer-pagination" [maxSize]="maxPaginationSize" directionLinks="true"
+            (pageChange)="currentPage = $event"></pagination-controls>
+    </div>
+
+    <ng-template #contentLoading>
+        <app-loading></app-loading>
+    </ng-template>
+</div>
