@@ -23,10 +23,10 @@
         <thead>
             <th class="clickable-head" (click)="changeHolderOrder()">Payer</th>
             <th class="clickable-head" (click)="changeReceiverOrder()">Receiver</th>
-            <th>Date</th>
+            <th class="clickable-head" (click)="changeDateOrder()">Date</th>
             <th class="clickable-head" (click)="changeTypeOrder()">Payment Type</th>
             <th class="clickable-head" (click)="changeAmountOrder()">Payment Amount</th>
-            <th class="clickable-head" (click)="changePartnerOrder()">Recko Partner</th>
+            <th>Recko Partner</th>
             <th>Recko Associated Email</th>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
         </tbody>
     </table>
 
-    <div class="text-center">
+    <div class="text-center" *ngIf="contentLoaded === 2">
         <pagination-controls id="transaction-pagination" [maxSize]="maxPaginationSize" directionLinks="true"
             (pageChange)="currentPage = $event"></pagination-controls>
     </div>

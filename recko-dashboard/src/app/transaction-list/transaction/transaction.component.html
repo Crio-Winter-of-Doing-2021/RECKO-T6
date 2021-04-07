@@ -2,7 +2,7 @@
     <tr>
         <td>{{transaction.holderName}}</td>
         <td>{{transaction.receiver}}</td>
-        <td>{{transaction.date | date: "shortDate"}}</td>
+        <td>{{transaction.date | date: "longDate"}}</td>
         <td>{{transaction.type}}</td>
         <td>{{transaction.amount}}</td>
         <td class="text-capitalize">{{transaction.credential.partner.name}}</td>

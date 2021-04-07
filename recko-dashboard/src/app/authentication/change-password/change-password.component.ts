@@ -34,7 +34,7 @@ export class ChangePasswordComponent implements OnInit {
       this.logout();
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 
@@ -45,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
       this.logout();
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 

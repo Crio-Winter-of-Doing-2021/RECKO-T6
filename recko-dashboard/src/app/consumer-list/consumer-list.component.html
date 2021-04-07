@@ -7,7 +7,7 @@
 
     <div class="form-group">
         <label class="text-capitalize font-weight-bolder" for="partner-dropdown">Choose Recko Partner</label>
-        <select class="form-control" id="partner-dropdown" [(ngModel)]="selectedPartner"
+        <select class="form-control" id="partner-dropdown" name="partner-dropdown" [(ngModel)]="selectedPartner"
             (change)="filterPartnerConsumers()">
             <option *ngFor="let partner of partners" [value]="partner.name">
                 {{partner.description}}
@@ -15,16 +15,39 @@
         </select>
     </div>
 
+    <form role="form">
+        <div class="form-group">
+            <label for="accountHolder" class="control-label text-capitalize font-weight-bolder">
+                Account Holder Name
+            </label>
+            <input type="text" class="form-control" id="acccountHolder" placeholder="Enter to Search Account Holder"
+                name="accountHolder" [(ngModel)]="accountHolderFilter">
+        </div>
+
+        <div class="form-group">
+            <label for="creationDate" class="control-label text-capitalize font-weight-bolder">
+                Account Creation Date
+            </label>
+            <input type="date" class="form-control" id="creationDate" placeholder="Enter to Search by Date"
+                name="creationDate" [(ngModel)]="creationDateFilter">
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Filter Consumers" [disabled]="disableFilters()"
+            (click)="applyFilters()"> &nbsp;
+
+        <input type="reset" class="btn btn-warning" value="Reset Filters" (click)="resetFilters()">
+    </form>
+
     <h3 class="text-capitlize text-center">Recko Consumer List</h3>
     <br>
     <table class="table" *ngIf="loadedContent == 2; else contentLoading">
         <thead>
             <tr>
                 <th class="clickable-head" (click)="changeHolderOrder()">Holder Name</th>
-                <th>Creation Date</th>
+                <th class="clickable-head" (click)="changeDateOrder()">Creation Date</th>
                 <th class="clickable-head" (click)="changeTypeOrder()">Type</th>
                 <th class="clickable-head" (click)="changeAmountOrder()">Balance</th>
-                <th class="clickable-head" (click)="changeProviderOrder()">Service Provider</th>
+                <th>Service Provider</th>
                 <th>Operations</th>
             </tr>
         </thead>
@@ -39,7 +62,7 @@
         </tbody>
     </table>
 
-    <div class="text-center">
+    <div class="text-center" *ngIf="loadedContent === 2">
         <pagination-controls id="consumer-pagination" [maxSize]="maxPaginationSize" directionLinks="true"
             (pageChange)="currentPage = $event"></pagination-controls>
     </div>

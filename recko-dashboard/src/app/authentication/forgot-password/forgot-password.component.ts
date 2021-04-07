@@ -29,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.router.navigate(["login"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.router.navigate(["login"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.setLoginTokens(true);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       this.setLoginTokens(false);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 

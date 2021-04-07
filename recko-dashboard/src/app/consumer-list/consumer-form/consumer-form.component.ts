@@ -58,7 +58,7 @@ export class ConsumerFormComponent implements OnInit {
     this.partnerService.getPartners().subscribe((partners: IReckoPartner[]) => {
       this.partners = partners;
     }, (error: IResponse) => {
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -68,7 +68,7 @@ export class ConsumerFormComponent implements OnInit {
       this.consumerService.getConsumerTypes(this.selectedPartner).subscribe((types: string[]) => {
         this.accountTypes = types;
       }, (error: IResponse) => {
-        window.alert(error.message);
+        window.alert(error.message || "Unable to connect to third party services, please refresh the page");
         this.router.navigate(["consumer-list"]);
       });
     }
@@ -88,7 +88,7 @@ export class ConsumerFormComponent implements OnInit {
       this.router.navigate(["consumer-list"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     })
   }
 
@@ -99,7 +99,7 @@ export class ConsumerFormComponent implements OnInit {
       this.router.navigate(["consumer-list"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
     });
   }
 

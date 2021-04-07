@@ -19,15 +19,17 @@ export class ConsumerListComponent implements OnInit {
   partners: IReckoPartner[] = [];
 
   selectedPartner: string = null;
+  accountHolderFilter: string = null;
+  creationDateFilter: string = null;
 
   loadedContent: number = 2;
 
   private holderAscending = false;
   private typeAscending = false;
   private amountAscending = false;
-  private providerAscending = false;
+  private dateAscending = false;
 
-  readonly itemsPerPage = 20;
+  readonly itemsPerPage = 15;
   currentPage = 1;
   readonly maxPaginationSize = 100;
 
@@ -49,7 +51,7 @@ export class ConsumerListComponent implements OnInit {
       this.loadedContent++;
     }, (error: IResponse) => {
       this.loadedContent++;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -62,7 +64,7 @@ export class ConsumerListComponent implements OnInit {
       this.loadedContent++;
     }, (error: IResponse) => {
       this.loadedContent++;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -75,7 +77,7 @@ export class ConsumerListComponent implements OnInit {
       this.loadedContent++;
     }, (error: IResponse) => {
       this.loadedContent++;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -85,6 +87,30 @@ export class ConsumerListComponent implements OnInit {
     if (index !== -1) {
       this.consumers.splice(index, 1);
     }
+  }
+
+  applyFilters() {
+    if (this.accountHolderFilter !== null && this.accountHolderFilter.length !== 0) {
+      this.consumers = this.consumers.filter((consumer: IReckoConsumer) => {
+        return consumer.name.toLowerCase().indexOf(this.accountHolderFilter.toLowerCase()) > -1;
+      });
+    }
+
+    if (this.creationDateFilter !== null) {
+      this.consumers = this.consumers.filter((consumer: IReckoConsumer) => {
+        return consumer.date.toString() === this.creationDateFilter;
+      });
+    }
+  }
+
+  resetFilters() {
+    if (this.selectedPartner === null) this.fetchAllConsumers();
+    else this.filterPartnerConsumers();
+  }
+
+  disableFilters(): boolean {
+    return (this.accountHolderFilter === null || this.accountHolderFilter.length === 0)
+      && (this.creationDateFilter === null || this.creationDateFilter.length === 0);
   }
 
   changeHolderOrder() {
@@ -112,13 +138,29 @@ export class ConsumerListComponent implements OnInit {
     });
   }
 
-  changeProviderOrder() {
-    this.providerAscending = !this.providerAscending;
-    this.consumers.sort((a, b) => {
-      return (this.providerAscending)
-        ? a.credential.partner.name.toLowerCase().localeCompare(b.credential.partner.name.toLowerCase())
-        : b.credential.partner.name.toLowerCase().localeCompare(a.credential.partner.name.toLowerCase());
-    })
+  private compareConsumerDate(a: string, b: string): number {
+    if (a !== b) {
+      const aElements: number[] = a.split("-").map(d => parseInt(d));
+      const bElements: number[] = b.split("-").map(d => parseInt(d));
+
+      if (aElements[0] !== bElements[0]) return aElements[0] - bElements[0];
+      else {
+        if (aElements[1] !== bElements[1]) return aElements[1] - bElements[1];
+        else {
+          if (aElements[2] !== bElements[2]) return aElements[2] - bElements[2];
+          else return 0;
+        }
+      }
+    }
+
+    return 0;
   }
 
+  changeDateOrder() {
+    this.dateAscending = !this.dateAscending;
+    this.consumers.sort((a, b) => {
+      return (this.dateAscending) ? this.compareConsumerDate(a.date.toString(), b.date.toString())
+        : this.compareConsumerDate(b.date.toString(), a.date.toString());
+    })
+  }
 }

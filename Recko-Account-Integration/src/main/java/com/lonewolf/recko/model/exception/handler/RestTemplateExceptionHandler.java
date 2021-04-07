@@ -22,5 +22,7 @@ public class RestTemplateExceptionHandler implements ResponseErrorHandler {
         } else if (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
             throw new ReckoException("error occurred from remote server side, plase try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        throw new ReckoException("unable to connect to third party services services", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

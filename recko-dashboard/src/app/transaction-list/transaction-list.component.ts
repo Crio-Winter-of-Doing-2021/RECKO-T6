@@ -22,13 +22,13 @@ export class TransactionListComponent implements OnInit {
 
   contentLoaded: number = 2;
 
-  private holderAscending: boolean = false;
-  private receiverAscending: boolean = false;
-  private typeAscending: boolean = false;
-  private amountAscending: boolean = false;
-  private partnerAscending: boolean = false
+  private holderAscending = false;
+  private receiverAscending = false;
+  private typeAscending = false;
+  private amountAscending = false;
+  private dateAscending = false;
 
-  readonly itemsPerPage = 20;
+  readonly itemsPerPage = 15;
   currentPage: number = 1;
   readonly maxPaginationSize = 100;
 
@@ -48,7 +48,7 @@ export class TransactionListComponent implements OnInit {
     }, (error: IResponse) => {
       this.contentLoaded++;
 
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -63,7 +63,7 @@ export class TransactionListComponent implements OnInit {
       }, (error: IResponse) => {
         this.contentLoaded++;
 
-        window.alert(error.message);
+        window.alert(error.message || "Unable to connect to third party services, please refresh the page");
         this.router.navigate(["**"]);
       })
     } else {
@@ -80,7 +80,7 @@ export class TransactionListComponent implements OnInit {
     }, (error: IResponse) => {
       this.contentLoaded++;
 
-      window.alert(error.message);
+      window.alert(error.message || "Unable to connect to third party services, please refresh the page");
       this.router.navigate(["**"]);
     })
   }
@@ -98,11 +98,11 @@ export class TransactionListComponent implements OnInit {
     this.receiverAscending = !this.receiverAscending;
     this.transactions.sort((a, b) => {
       if (a.receiver == null) {
-        return -1;
+        return 1;
       }
 
       if (b.receiver == null) {
-        return 1;
+        return -1;
       }
 
       return (this.receiverAscending)
@@ -127,12 +127,31 @@ export class TransactionListComponent implements OnInit {
     })
   }
 
-  changePartnerOrder() {
-    this.partnerAscending = !this.partnerAscending;
+  private compareConsumerDate(a: string, b: string): number {
+    if (a !== b) {
+      const aElements: number[] = a.split("-").map(d => parseInt(d));
+      const bElements: number[] = b.split("-").map(d => parseInt(d));
+
+      console.log(aElements, bElements);
+
+      if (aElements[0] !== bElements[0]) return aElements[0] - bElements[0];
+      else {
+        if (aElements[1] !== bElements[1]) return aElements[1] - bElements[1];
+        else {
+          if (aElements[2] !== bElements[2]) return aElements[2] - bElements[2];
+          else return 0;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  changeDateOrder() {
+    this.dateAscending = !this.dateAscending;
     this.transactions.sort((a, b) => {
-      return (this.partnerAscending)
-        ? a.credential.partner.name.toLowerCase().localeCompare(b.credential.partner.name.toLowerCase())
-        : b.credential.partner.name.toLowerCase().localeCompare(a.credential.partner.name.toLowerCase());
+      return (this.dateAscending) ? this.compareConsumerDate(a.date.toString(), b.date.toString())
+        : this.compareConsumerDate(b.date.toString(), a.date.toString());
     })
   }
 }
