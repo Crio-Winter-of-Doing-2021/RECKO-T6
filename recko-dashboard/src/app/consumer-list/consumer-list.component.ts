@@ -16,6 +16,8 @@ import { IResponse } from '../models/response.model';
 export class ConsumerListComponent implements OnInit {
 
   consumers: IReckoConsumer[] = [];
+  storedConsumers: IReckoConsumer[] = [];
+
   partners: IReckoPartner[] = [];
 
   selectedPartner: string = null;
@@ -24,10 +26,10 @@ export class ConsumerListComponent implements OnInit {
 
   loadedContent: number = 2;
 
-  private holderAscending = false;
-  private typeAscending = false;
-  private amountAscending = false;
-  private dateAscending = false;
+  holderAscending = null;
+  typeAscending = null;
+  amountAscending = null;
+  dateAscending = false;
 
   readonly itemsPerPage = 15;
   currentPage = 1;
@@ -43,11 +45,18 @@ export class ConsumerListComponent implements OnInit {
     this.fetchAllPartners();
   }
 
+  private resetOrderFilters() {
+    this.holderAscending = this.typeAscending = this.amountAscending = null;
+    this.dateAscending = false;
+  }
+
   fetchAllConsumers() {
     this.loadedContent--;
+    this.resetOrderFilters();
 
     this.consumerService.getConsumers().subscribe(consumers => {
       this.consumers = consumers;
+      this.storedConsumers = consumers;
       this.loadedContent++;
     }, (error: IResponse) => {
       this.loadedContent++;
@@ -71,9 +80,11 @@ export class ConsumerListComponent implements OnInit {
 
   filterPartnerConsumers() {
     this.loadedContent--;
+    this.resetOrderFilters();
 
     this.consumerService.getPartnerConsumers(this.selectedPartner).subscribe(consumers => {
       this.consumers = consumers;
+      this.storedConsumers = consumers;
       this.loadedContent++;
     }, (error: IResponse) => {
       this.loadedContent++;
@@ -90,22 +101,28 @@ export class ConsumerListComponent implements OnInit {
   }
 
   applyFilters() {
-    if (this.accountHolderFilter !== null && this.accountHolderFilter.length !== 0) {
-      this.consumers = this.consumers.filter((consumer: IReckoConsumer) => {
-        return consumer.name.toLowerCase().indexOf(this.accountHolderFilter.toLowerCase()) > -1;
-      });
+
+    let filteredConsumers: IReckoConsumer[] = [];
+
+    if (this.accountHolderFilter !== null && this.accountHolderFilter.length > 0) {
+      filteredConsumers = this.storedConsumers.filter((con) => con.name.toLowerCase().indexOf(this.accountHolderFilter.toLowerCase()) > -1);
     }
 
-    if (this.creationDateFilter !== null) {
-      this.consumers = this.consumers.filter((consumer: IReckoConsumer) => {
-        return consumer.date.toString() === this.creationDateFilter;
-      });
+    if (this.creationDateFilter !== null && this.creationDateFilter.length > 0) {
+      if (filteredConsumers.length === 0) {
+        filteredConsumers = this.storedConsumers.filter((con) => con.date.toString() === this.creationDateFilter);
+      } else {
+        filteredConsumers = filteredConsumers.filter((con) => con.date.toString() === this.creationDateFilter);
+      }
     }
+
+    this.resetOrderFilters();
+    this.consumers = filteredConsumers;
   }
 
   resetFilters() {
-    if (this.selectedPartner === null) this.fetchAllConsumers();
-    else this.filterPartnerConsumers();
+    this.selectedPartner = null;
+    this.fetchAllConsumers();
   }
 
   disableFilters(): boolean {

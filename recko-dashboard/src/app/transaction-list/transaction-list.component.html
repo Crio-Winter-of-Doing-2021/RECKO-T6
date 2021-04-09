@@ -21,11 +21,41 @@
 
     <table class="table" *ngIf="contentLoaded === 2; else contentLoading">
         <thead>
-            <th class="clickable-head" (click)="changeHolderOrder()">Payer</th>
-            <th class="clickable-head" (click)="changeReceiverOrder()">Receiver</th>
-            <th class="clickable-head" (click)="changeDateOrder()">Date</th>
-            <th class="clickable-head" (click)="changeTypeOrder()">Payment Type</th>
-            <th class="clickable-head" (click)="changeAmountOrder()">Payment Amount</th>
+            <th class="clickable-head" (click)="changeHolderOrder()">
+                Payer
+                <i *ngIf="holderAscending !== null"
+                    [ngClass]="{'bi bi-caret-up-fill' : holderAscending, 'bi bi-caret-down-fill': !holderAscending}">
+                </i>
+            </th>
+
+            <th class="clickable-head" (click)="changeReceiverOrder()">
+                Receiver
+                <i *ngIf="receiverAscending !== null"
+                    [ngClass]="{'bi bi-caret-up-fill' : receiverAscending, 'bi bi-caret-down-fill': !receiverAscending}">
+                </i>
+            </th>
+
+            <th class="clickable-head" (click)="changeDateOrder()">
+                Date
+                <i *ngIf="dateAscending !== null"
+                    [ngClass]="{'bi bi-caret-up-fill' : dateAscending, 'bi bi-caret-down-fill': !dateAscending}">
+                </i>
+            </th>
+
+            <th class="clickable-head" (click)="changeTypeOrder()">
+                Payment Type
+                <i *ngIf="typeAscending !== null"
+                    [ngClass]="{'bi bi-caret-up-fill' : typeAscending, 'bi bi-caret-down-fill': !typeAscending}">
+                </i>
+            </th>
+
+            <th class="clickable-head" (click)="changeAmountOrder()">
+                Payment Amount
+                <i *ngIf="amountAscending !== null"
+                    [ngClass]="{'bi bi-caret-up-fill' : amountAscending, 'bi bi-caret-down-fill': !amountAscending}">
+                </i>
+            </th>
+
             <th>Recko Partner</th>
             <th>Recko Associated Email</th>
         </thead>

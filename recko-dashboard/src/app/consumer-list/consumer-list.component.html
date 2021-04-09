@@ -1,5 +1,6 @@
 <div class="jumbotron">
     <h1 class="text-center">Recko Account Integration Dashboard</h1>
+    <hr>
     <div class="text-center">
         <a class="btn btn-lg btn-primary" routerLink="/consumer-form">Add Account</a>
     </div>
@@ -37,16 +38,40 @@
 
         <input type="reset" class="btn btn-warning" value="Reset Filters" (click)="resetFilters()">
     </form>
+    <hr>
 
     <h3 class="text-capitlize text-center">Recko Consumer List</h3>
     <br>
     <table class="table" *ngIf="loadedContent == 2; else contentLoading">
         <thead>
             <tr>
-                <th class="clickable-head" (click)="changeHolderOrder()">Holder Name</th>
-                <th class="clickable-head" (click)="changeDateOrder()">Creation Date</th>
-                <th class="clickable-head" (click)="changeTypeOrder()">Type</th>
-                <th class="clickable-head" (click)="changeAmountOrder()">Balance</th>
+                <th class="clickable-head" (click)="changeHolderOrder()">
+                    Holder Name
+                    <i *ngIf="holderAscending !== null"
+                        [ngClass]="{'bi bi-caret-up-fill' : holderAscending, 'bi bi-caret-down-fill': !holderAscending}">
+                    </i>
+                </th>
+
+                <th class="clickable-head" (click)="changeDateOrder()">
+                    Creation Date
+                    <i *ngIf="dateAscending !== null"
+                        [ngClass]="{'bi bi-caret-up-fill' : dateAscending, 'bi bi-caret-down-fill': !dateAscending}">
+                    </i>
+                </th>
+
+                <th class="clickable-head" (click)="changeTypeOrder()">
+                    Type
+                    <i *ngIf="typeAscending !== null"
+                        [ngClass]="{'bi bi-caret-up-fill' : typeAscending, 'bi bi-caret-down-fill': !typeAscending}">
+                    </i>
+                </th>
+
+                <th class="clickable-head" (click)="changeAmountOrder()">
+                    Balance
+                    <i *ngIf="amountAscending !== null"
+                        [ngClass]="{'bi bi-caret-up-fill' : amountAscending, 'bi bi-caret-down-fill': !amountAscending}">
+                    </i>
+                </th>
                 <th>Service Provider</th>
                 <th>Operations</th>
             </tr>

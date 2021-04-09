@@ -22,11 +22,11 @@ export class TransactionListComponent implements OnInit {
 
   contentLoaded: number = 2;
 
-  private holderAscending = false;
-  private receiverAscending = false;
-  private typeAscending = false;
-  private amountAscending = false;
-  private dateAscending = false;
+  holderAscending = null;
+  receiverAscending = null;
+  typeAscending = null;
+  amountAscending = null;
+  dateAscending = false;
 
   readonly itemsPerPage = 15;
   currentPage: number = 1;
@@ -39,8 +39,14 @@ export class TransactionListComponent implements OnInit {
     this.fetchPartners();
   }
 
+  private resetOrderFilters() {
+    this.holderAscending = this.receiverAscending = this.amountAscending = this.typeAscending = null;
+    this.dateAscending = false;
+  }
+
   fetchTransactions() {
     this.contentLoaded--;
+    this.resetOrderFilters();
 
     this.transactionService.fetchTransactions().subscribe((data: ITransaction[]) => {
       this.contentLoaded++;
@@ -55,6 +61,7 @@ export class TransactionListComponent implements OnInit {
 
   fetchPartnerTransactions() {
     this.contentLoaded--;
+    this.resetOrderFilters();
 
     if (this.selectedPartner !== null) {
       this.transactionService.fetchPartnerTransactions(this.selectedPartner).subscribe((transactions: ITransaction[]) => {
