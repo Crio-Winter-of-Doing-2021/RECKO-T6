@@ -87,7 +87,9 @@ export class ConsumerListComponent implements OnInit {
       this.storedConsumers = consumers;
       this.loadedContent++;
 
-      this.applyFilters();
+      if (this.accountHolderFilter !== null || this.creationDateFilter !== null) {
+        this.applyFilters();
+      }
     }, (error: IResponse) => {
       this.loadedContent++;
       window.alert(error.message || "Unable to connect to third party services, please refresh the page");

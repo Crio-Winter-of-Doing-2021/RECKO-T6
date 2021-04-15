@@ -69,7 +69,9 @@ export class TransactionListComponent implements OnInit {
         this.transactions = transactions;
         this.storedTransactions = transactions;
 
-        this.applySearchFilters();
+        if (this.nameFilter !== null || this.dateFilter !== null) {
+          this.applySearchFilters();
+        }
       }, (error: IResponse) => {
         this.contentLoaded++;
 

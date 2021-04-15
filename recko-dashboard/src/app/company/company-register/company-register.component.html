@@ -1,5 +1,5 @@
 <div class="jumbotron">
-    <form class="form" #companyRegister="ngForm" *ngForm="!isLoading; else processing">
+    <form class="form" #companyRegister="ngForm" *ngIf="!isLoading; else processing">
 
         <h1 class="text-capitalize text-center font-weight-bolder">register company</h1>
 
