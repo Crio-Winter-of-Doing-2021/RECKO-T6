@@ -9,8 +9,11 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Setter(AccessLevel.NONE)
-public class TransactionDepositAccount {
+public class PaymentAccount {
 
     @JsonProperty("value")
     private String id;
+
+    @JsonProperty("name")
+    private String holder;
 }

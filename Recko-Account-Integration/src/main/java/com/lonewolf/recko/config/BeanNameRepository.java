@@ -8,6 +8,8 @@ public class BeanNameRepository {
     //    Quickbooks Bean Names
     public static final String Custom_Rest_Template = "CustomRestTemplate";
 
+    public static final String Quickbooks_Credential_Register = "QuickbooksCredentialRegister";
+
     public static final String Quickbooks_Host_Consumer = "QuickbooksHostConsumer";
     public static final String Quickbooks_Remote_Consumer = "QuickbooksRemoteConsumer";
 
@@ -22,6 +24,8 @@ public class BeanNameRepository {
     //    Xero Bean Names
     public static final String Xero_Host_Consumer = "XeroHostConsumer";
     public static final String Xero_Remote_Consumer = "XeroRemoteConsumer";
+
+    public static final String Xero_Credential_Register = "XeroCredentialRegister";
 
     public static final String Xero_Remote_Token = "XeroRemoteToken";
 

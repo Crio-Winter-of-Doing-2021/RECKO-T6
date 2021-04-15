@@ -12,18 +12,24 @@
     </parent>
 
     <groupId>com.lonewolf</groupId>
-    <artifactId>recko-account-integration</artifactId>
+    <artifactId>recko-consumer-integration</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ReckoAccountIntegration</name>
     <description>Spring Boot API for Account services integration in Recko Dashboard</description>
 
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEnocding>UTF-8</project.build.sourceEnocding>
         <swagger.version>3.0.0</swagger.version>
         <tomcat.version>9.0.43</tomcat.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +56,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-test</artifactId>
             <scope>test</scope>
         </dependency>
 

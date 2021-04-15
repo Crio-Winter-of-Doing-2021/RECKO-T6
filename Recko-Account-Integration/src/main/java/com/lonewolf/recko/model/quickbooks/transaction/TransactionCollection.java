@@ -13,6 +13,6 @@ import java.util.List;
 @Setter(AccessLevel.NONE)
 public class TransactionCollection {
 
-    @JsonProperty("Payment")
-    private List<Payment> payments;
+    @JsonProperty("JournalEntry")
+    private List<JournalEntry> entries;
 }

@@ -13,43 +13,51 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav mr-auto">
 
-            <a class="nav-item nav-link active text-primary font-weight-bolder text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./home/">
+            <a class="nav-item nav-link active text-primary text-uppercase mr-auto" data-toggle="collapse"
+                data-target=".navbar-collapse.show" routerLink="./home/">
                 Home
             </a>
 
-            <a class="nav-item nav-link sign-out active font-weight-bolder text-primary text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./consumer-list/">
+            <a class="nav-item nav-link sign-out active text-primary text-uppercase mr-auto" data-toggle="collapse"
+                data-target=".navbar-collapse.show" routerLink="./consumer-list/">
                 Consumers
             </a>
 
-            <a class="nav-item nav-link sign-out active font-weight-bolder text-primary text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./transaction-list">
+            <a class="nav-item nav-link sign-out active text-primary text-uppercase mr-auto" data-toggle="collapse"
+                data-target=".navbar-collapse.show" routerLink="./transaction-list">
                 Transactions
+            </a>
+
+            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
+                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-register/">
+                Company
+            </a>
+
+            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
+                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-handler-register/">
+                Company Handler
+            </a>
+
+            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
+                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-credential-register/">
+                Company Credential
             </a>
         </div>
 
         <div class="navbar-nav ml-auto">
-            <a *ngIf="isAuthenticated()"
-                class="nav-item nav-link sign-out active text-primary text-uppercase font-weight-bolder ml-auto"
+            <a *ngIf="isAuthenticated()" class="nav-item nav-link sign-out active text-primary text-uppercase ml-auto"
                 data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./change-password/">
                 Change Password
             </a>
 
             <a *ngIf="!isAuthenticated()"
-                class="nav-item nav-link active text-primary text-uppercase font-weight-bolder ml-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.shocw" routerLink="./forgot-password/">
-                Forgot Passsword
-            </a>
-
-            <a *ngIf="!isAuthenticated()"
-                class="nav-item nav-link active text-primary text-uppercase font-weight-bolder ml-auto"
+                class="nav-item nav-link active font-weight-bolder text-primary text-uppercase ml-auto"
                 data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./login/">
                 Sign In
             </a>
 
             <a *ngIf="isAuthenticated()"
-                class="nav-item nav-link text-primary text-uppercase font-weight-bolder ml-auto signout"
+                class="nav-item nav-link text-primary font-weight-bolder text-uppercase ml-auto signout"
                 data-toggle="collapse" data-target=".navbar-collapse.show" (click)="operatorSignOut()">
                 Hi {{authenticatedUser}}, SIGN OUT
             </a>

@@ -86,6 +86,8 @@ export class ConsumerListComponent implements OnInit {
       this.consumers = consumers;
       this.storedConsumers = consumers;
       this.loadedContent++;
+
+      this.applyFilters();
     }, (error: IResponse) => {
       this.loadedContent++;
       window.alert(error.message || "Unable to connect to third party services, please refresh the page");
@@ -105,14 +107,17 @@ export class ConsumerListComponent implements OnInit {
     let filteredConsumers: IReckoConsumer[] = [];
 
     if (this.accountHolderFilter !== null && this.accountHolderFilter.length > 0) {
-      filteredConsumers = this.storedConsumers.filter((con) => con.name.toLowerCase().indexOf(this.accountHolderFilter.toLowerCase()) > -1);
+      filteredConsumers = this.storedConsumers
+        .filter((con) => con.name.toLowerCase().indexOf(this.accountHolderFilter.toLowerCase()) > -1);
     }
 
     if (this.creationDateFilter !== null && this.creationDateFilter.length > 0) {
       if (filteredConsumers.length === 0) {
-        filteredConsumers = this.storedConsumers.filter((con) => con.date.toString() === this.creationDateFilter);
+        filteredConsumers = this.storedConsumers
+          .filter((con) => con.date.toString() === this.creationDateFilter);
       } else {
-        filteredConsumers = filteredConsumers.filter((con) => con.date.toString() === this.creationDateFilter);
+        filteredConsumers = filteredConsumers
+          .filter((con) => con.date.toString() === this.creationDateFilter);
       }
     }
 

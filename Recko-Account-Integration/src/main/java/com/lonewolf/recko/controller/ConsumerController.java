@@ -25,23 +25,18 @@ public class ConsumerController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<Consumer> controlGetConsumers() {
-        return service.getConsumers();
+    @GetMapping("/{id}")
+    public List<Consumer> controlGetConsumers(@PathVariable("id") String companyId) {
+        return service.getConsumers(companyId);
     }
 
-    @GetMapping("/{partner}")
-    public List<Consumer> controlGetPartnerConsumers(@PathVariable("partner") PartnerNameRepository nameRepository) {
-        return service.getPartnerConsumers(nameRepository);
+    @GetMapping("/{id}/{partner}")
+    public List<Consumer> controlGetPartnerConsumers(@PathVariable("partner") PartnerNameRepository nameRepository,
+                                                     @PathVariable("id") String companyId) {
+        return service.getPartnerConsumers(nameRepository, companyId);
     }
 
-    @GetMapping("/{partner}/{email}")
-    public List<Consumer> controlGetPartnerHandlerConsumers(@PathVariable("partner") PartnerNameRepository nameRepository,
-                                                            @PathVariable("email") String email) {
-        return service.getPartnerHandlerConsumers(nameRepository, email);
-    }
-
-    @GetMapping("/types/{partner}")
+    @GetMapping("/{partner}/types")
     public List<String> controlGetAccountTypes(@PathVariable("partner") PartnerNameRepository nameRepository) {
         return service.getAccountTypes(nameRepository);
     }

@@ -1,14 +1,13 @@
 package com.lonewolf.recko.service.factory.host;
 
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Consumer;
 
 import java.util.List;
 
 public interface HostConsumerContract {
 
-    List<Consumer> getPartnerConsumers();
-
-    List<Consumer> getPartnerHandlerConsumers(String email);
+    List<Consumer> getPartnerConsumers(CompanyCredential credential);
 
     Consumer addConsumer(Consumer consumer);
 

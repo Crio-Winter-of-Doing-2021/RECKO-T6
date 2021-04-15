@@ -1,14 +1,13 @@
 package com.lonewolf.recko.service.xero.remote;
 
 import com.lonewolf.recko.config.BeanNameRepository;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Consumer;
-import com.lonewolf.recko.entity.PartnerCredential;
 import com.lonewolf.recko.model.exception.ReckoException;
-import com.lonewolf.recko.model.xero.Tenant;
+import com.lonewolf.recko.model.xero.AccountType;
 import com.lonewolf.recko.model.xero.consumer.Account;
 import com.lonewolf.recko.model.xero.consumer.AccountCollection;
 import com.lonewolf.recko.model.xero.consumer.AccountStatus;
-import com.lonewolf.recko.model.xero.consumer.AccountType;
 import com.lonewolf.recko.service.factory.remote.RemoteConsumerContract;
 import com.lonewolf.recko.service.factory.remote.RemoteTokenContract;
 import com.lonewolf.recko.service.xero.Utils;
@@ -38,29 +37,8 @@ public class RemoteConsumerService implements RemoteConsumerContract {
         this.utils = utils;
     }
 
-    private String remoteFetchTenant(PartnerCredential credential, String accessToken) {
-        tokenContract.refreshToken(credential);
-
-        String url = "https://api.xero.com/connections";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity requestEntity = new HttpEntity(headers);
-
-        ResponseEntity<Tenant[]> tenantEntity = template.exchange(url, HttpMethod.GET, requestEntity, Tenant[].class);
-
-        Tenant[] newTenants = tenantEntity.getBody();
-        if (newTenants == null) {
-            throw new ReckoException("tenant couldn't be fetched", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return newTenants[0].getTenantId();
-    }
-
     @Override
-    public List<Consumer> fetchConsumers(PartnerCredential credential) {
+    public List<Consumer> fetchConsumers(CompanyCredential credential) {
         tokenContract.refreshToken(credential);
 
         String url = "https://api.xero.com/api.xro/2.0/Accounts";
@@ -88,7 +66,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
 
 
     @Override
-    public Consumer addConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer addConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://api.xero.com/api.xro/2.0/Accounts";
@@ -118,12 +96,11 @@ public class RemoteConsumerService implements RemoteConsumerContract {
         }
 
         Account newAccount = collection.getAccounts().get(0);
-
         return utils.parseXeroConsumer(newAccount, credential);
     }
 
     @Override
-    public Consumer updateConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer updateConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://api.xero.com/api.xro/2.0/Accounts/" + consumer.getConsumerId();
@@ -151,7 +128,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     }
 
     @Override
-    public Consumer deleteConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer deleteConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://api.xero.com/api.xro/2.0/Accounts/" + consumer.getConsumerId();

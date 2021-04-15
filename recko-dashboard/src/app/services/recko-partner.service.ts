@@ -12,7 +12,7 @@ import { IReckoPartner } from '../models/recko-partner.model';
 })
 export class ReckoPartnerService {
 
-    private readonly baseApiUrl: string = `${environment.apiUrl}/api/services`;
+    private readonly baseApiUrl: string = `${environment.apiUrl}/api/partners`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({ "Content-Type": "applicaion/json" })

@@ -1,31 +1,28 @@
 package com.lonewolf.recko.service.quickbooks;
 
 import com.lonewolf.recko.config.BeanNameRepository;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Consumer;
-import com.lonewolf.recko.entity.PartnerCredential;
 import com.lonewolf.recko.entity.Transaction;
 import com.lonewolf.recko.model.quickbooks.consumer.Account;
+import com.lonewolf.recko.model.quickbooks.transaction.JournalEntry;
 import com.lonewolf.recko.model.quickbooks.transaction.Payment;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component(BeanNameRepository.Quickbooks_Utils)
 public class Utils {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    public Consumer parseQuickbooksAccount(Account account, PartnerCredential credential) {
-        LocalDate createDate = LocalDate.parse(account.getMetadata().getCreateDate().substring(0, 10), formatter);
-
+    public Consumer parseQuickbooksAccount(Account account, CompanyCredential credential) {
         Consumer consumer = new Consumer(
                 account.getId(),
                 account.getName(),
                 account.getBalance(),
-                createDate,
+                parseQuickbooksTransactionDate(account.getMetadata().getCreateDate()),
                 account.getType().getName(),
                 credential
         );
@@ -40,25 +37,25 @@ public class Utils {
         return LocalDate.parse(date.substring(0, 10), formatter);
     }
 
-    public Transaction parseQuickbooksTransaction(Payment payment, PartnerCredential credential) {
-        String depositHolder = null;
-        if (payment.getDepositAccount() != null) {
-            List<Consumer> consumers = credential.getConsumers()
-                    .stream()
-                    .filter(consumer -> consumer.getConsumerId().equalsIgnoreCase(payment.getDepositAccount().getId()))
-                    .collect(Collectors.toUnmodifiableList());
+    public List<Transaction> parseQuickbooksTransaction(CompanyCredential credential, JournalEntry journalEntry) {
+        LocalDate transactionDate = parseQuickbooksTransactionDate(journalEntry.getTransactionDate());
 
-            depositHolder = consumers.isEmpty() ? null : consumers.get(0).getName();
+        List<Transaction> transactions = new ArrayList<>();
+        for (Payment payment : journalEntry.getPayments()) {
+            Transaction transaction = new Transaction();
+
+            transaction.setAccountId(payment.getPaymentDetail().getAccount().getId());
+            transaction.setHolderName(payment.getPaymentDetail().getAccount().getHolder());
+
+            transaction.setAmount(payment.getAmount());
+            transaction.setDate(transactionDate);
+            transaction.setTransactionType(payment.getPaymentDetail().getType());
+
+            transaction.setCredential(credential);
+
+            transactions.add(transaction);
         }
 
-        return new Transaction(
-                payment.getId(),
-                payment.getAccount().getValue(),
-                payment.getAccount().getPayer(),
-                depositHolder,
-                "Payment",
-                payment.getAmount(),
-                parseQuickbooksTransactionDate(payment.getMetadata().getCreateDate()),
-                credential);
+        return transactions;
     }
 }

@@ -1,0 +1,51 @@
+<div class="jumbotron">
+    <form class="form" #companyRegister="ngForm" *ngForm="!isLoading; else processing">
+
+        <h1 class="text-capitalize text-center font-weight-bolder">register company</h1>
+
+        <div class="form-group">
+            <label for="id" class="font-weight-bolder text-capitalzie">Enter Unique Company Identification</label>
+            <input type="text" placeholder="Enter Unique Company Identification" required class="form-control" id="id"
+                name="id" [(ngModel)]="company.id" #id="ngModel">
+
+            <div *ngIf="id.touched && id.invalid">
+                <div *ngIf="id.errors.required" class="alert alert-danger text-capitalize">
+                    Company id is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="font-weight-bolder text-capitalzie">Enter Company Name</label>
+            <input type="text" placeholder="Enter Company Name" required class="form-control" id="name" name="name"
+                [(ngModel)]="company.name" #name="ngModel">
+
+            <div *ngIf="name.touched && name.invalid">
+                <div *ngIf="name.errors.required" class="alert alert-danger text-capitalize">
+                    Company name is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="font-weight-bolder text-capitalzie">Enter Company Password</label>
+            <input type="password" placeholder="Enter Company Password" required class="form-control" id="password"
+                name="password" [(ngModel)]="company.password" #password="ngModel">
+
+            <div *ngIf="password.touched && password.invalid">
+                <div *ngIf="password.errors.required" class="alert alert-danger text-capitalize">
+                    Company password is mandatory
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" value="Register Company" class="btn btn-primary" (click)="registerCompany()"
+            [disabled]="companyRegister.invalid">
+        &nbsp;
+        <input type="button" value="Cancel" class="btn btn-danger" (click)="cancelRegisterCompany()">
+    </form>
+
+    <ng-template #processing>
+        <app-loading></app-loading>
+    </ng-template>
+</div>

@@ -1,7 +1,10 @@
 package com.lonewolf.recko.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,27 +12,25 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "transactions")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter(AccessLevel.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Transaction {
 
     @Id
-    @Column(name = "transaction_id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    @Setter(AccessLevel.NONE)
+    private long id;
 
     @Column(name = "account_id")
     private String accountId;
 
-    @Column(name = "payer")
+    @Column(name = "holder_name")
+    @JsonProperty("holder")
     private String holderName;
 
-    @Column(name = "receiver")
-    private String receiver;
-
     @Column(name = "transaction_type")
-    private String type;
+    @JsonProperty("type")
+    private String transactionType;
 
     @Column(name = "amount")
     private double amount;
@@ -38,5 +39,5 @@ public class Transaction {
     private LocalDate date;
 
     @ManyToOne
-    private PartnerCredential credential;
+    private CompanyCredential credential;
 }

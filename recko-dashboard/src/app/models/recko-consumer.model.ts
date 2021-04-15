@@ -1,4 +1,4 @@
-import { IPartnerCredential } from './parther-credential.model';
+import { ICompanyCredential } from './company-credential.model';
 
 export interface IReckoConsumer {
     id: string;
@@ -6,5 +6,5 @@ export interface IReckoConsumer {
     amount: number;
     date: Date;
     type: string;
-    credential: IPartnerCredential;
+    credential: ICompanyCredential;
 }

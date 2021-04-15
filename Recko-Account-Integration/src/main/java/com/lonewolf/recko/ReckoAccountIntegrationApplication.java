@@ -1,21 +1,16 @@
 package com.lonewolf.recko;
 
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@Slf4j
+@EnableBatchProcessing
+@EnableScheduling
 public class ReckoAccountIntegrationApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ReckoAccountIntegrationApplication.class, args);
-    }
-
-    @PostConstruct
-    public void applicationInitialized() {
-        log.info("========= spring boot application is working properly =========");
     }
 }

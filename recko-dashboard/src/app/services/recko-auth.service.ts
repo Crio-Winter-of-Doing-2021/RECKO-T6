@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 import { ServiceErrorHandler } from './utils/service-error-handler';
 
 import { IChangePassword } from '../models/change-password.model';
-import { IResponse } from '../models/response.model';
 import { IReckoOperator } from '../models/recko-operator.model';
 import { StorageKey } from '../models/storage-key.model';
 
@@ -25,7 +24,7 @@ export class ReckoAuthService {
     constructor(private http: HttpClient, private handler: ServiceErrorHandler) { }
 
     get authenticatedUsername(): string {
-        return localStorage.getItem(StorageKey.username) || null;
+        return localStorage.getItem(StorageKey.username);
     }
 
     get isAuthenticated(): boolean {
@@ -47,39 +46,30 @@ export class ReckoAuthService {
     setTokens(operator: IReckoOperator, isAdmin: boolean = true) {
         localStorage.setItem(StorageKey.username, operator.username);
         localStorage.setItem(StorageKey.isAdmin, isAdmin.toString());
-    }
-
-    loginAdmin(admin: IReckoOperator): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/adminLogin`;
-        return this.http.post<IResponse>(url, admin, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    loginModerator(moderator: IReckoOperator): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/moderatorLogin`;
-        return this.http.post<IResponse>(url, moderator, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    changePasswordAdmin(adminPass: IChangePassword): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/adminChangePassword`;
-        return this.http.patch<IResponse>(url, adminPass, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    changePasswordModerator(modPass: IChangePassword): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/moderatorChangePassword`;
-        return this.http.patch<IResponse>(url, modPass, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    forgotPasswordAdmin(adminName: string): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/adminForgotPassword/${adminName}`;
-        return this.http.get<IResponse>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    forgotPasswordModerator(modName: string): Observable<IResponse> {
-        const url = `${this.baseApiUrl}/moderatorForgotPassword/${modName}`;
-        return this.http.get<IResponse>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+        localStorage.setItem(StorageKey.company, operator.company.id);
     }
 
     logout() {
         localStorage.clear();
+    }
+
+    loginAdmin(admin: IReckoOperator): Observable<IReckoOperator> {
+        const url = `${this.baseApiUrl}/adminLogin`;
+        return this.http.post<IReckoOperator>(url, admin, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    loginModerator(moderator: IReckoOperator): Observable<IReckoOperator> {
+        const url = `${this.baseApiUrl}/moderatorLogin`;
+        return this.http.post<IReckoOperator>(url, moderator, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    changePasswordAdmin(adminPass: IChangePassword): Observable<IReckoOperator> {
+        const url = `${this.baseApiUrl}/adminChangePassword`;
+        return this.http.patch<IReckoOperator>(url, adminPass, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    changePasswordModerator(modPass: IChangePassword): Observable<IReckoOperator> {
+        const url = `${this.baseApiUrl}/moderatorChangePassword`;
+        return this.http.patch<IReckoOperator>(url, modPass, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 }

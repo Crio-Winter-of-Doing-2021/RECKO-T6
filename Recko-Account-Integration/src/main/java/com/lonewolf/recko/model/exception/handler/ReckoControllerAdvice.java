@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ReckoExceptionHandler {
+public class ReckoControllerAdvice {
 
     private static final String Message = "message";
 

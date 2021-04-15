@@ -1,10 +1,10 @@
 package com.lonewolf.recko.service.xero.remote;
 
 import com.lonewolf.recko.config.BeanNameRepository;
-import com.lonewolf.recko.entity.PartnerCredential;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.model.exception.ReckoException;
 import com.lonewolf.recko.model.xero.Token;
-import com.lonewolf.recko.repository.PartnerCredentialRepository;
+import com.lonewolf.recko.repository.CompanyCredentialRepository;
 import com.lonewolf.recko.service.factory.remote.RemoteTokenContract;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
@@ -22,23 +22,18 @@ import java.util.Base64;
 public class RemoteTokenService implements RemoteTokenContract {
 
     private static final long Access_Token_Validity = 1800;
-    private static final long Refresh_Token_Validity = 60;
 
     private final RestTemplate template;
-    private final PartnerCredentialRepository credentialRepository;
+    private final CompanyCredentialRepository credentialRepository;
 
     public RemoteTokenService(@Qualifier(BeanNameRepository.Custom_Rest_Template) RestTemplate template,
-                              PartnerCredentialRepository credentialRepository) {
+                              CompanyCredentialRepository credentialRepository) {
         this.template = template;
         this.credentialRepository = credentialRepository;
     }
 
     @Override
-    public void reauthorize(PartnerCredential credential) {
-    }
-
-    @Override
-    public void refreshToken(PartnerCredential credential) {
+    public void refreshToken(CompanyCredential credential) {
         LocalDateTime lastAccess = credential.getLastAccess();
         if (lastAccess != null && lastAccess.until(LocalDateTime.now(), ChronoUnit.SECONDS) <= Access_Token_Validity) {
             return;

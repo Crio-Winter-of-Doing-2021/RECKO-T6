@@ -8,6 +8,7 @@ import { ServiceErrorHandler } from './utils/service-error-handler';
 
 import { IReckoConsumer } from '../models/recko-consumer.model';
 import { IResponse } from '../models/response.model';
+import { StorageKey } from "../models/storage-key.model";
 
 @Injectable({
     providedIn: 'root'
@@ -22,21 +23,17 @@ export class ReckoConsumerService {
     constructor(private http: HttpClient, private handler: ServiceErrorHandler) { }
 
     getConsumers(): Observable<IReckoConsumer[]> {
-        return this.http.get<IReckoConsumer[]>(this.baseApiUrl, this.httpOptions).pipe(catchError(this.handler.errorHandler));
-    }
-
-    getPartnerConsumers(partnerName: string): Observable<IReckoConsumer[]> {
-        const url = `${this.baseApiUrl}/${partnerName}`;
+        const url = `${this.baseApiUrl}/${localStorage.getItem(StorageKey.company)}`;
         return this.http.get<IReckoConsumer[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 
-    getPartnerHandlerConsumers(partnerName: string, email: string): Observable<IReckoConsumer[]> {
-        const url = `${this.baseApiUrl}/${partnerName}/${email}`;
+    getPartnerConsumers(partnerName: string): Observable<IReckoConsumer[]> {
+        const url = `${this.baseApiUrl}/${localStorage.getItem(StorageKey.company)}/${partnerName}`;
         return this.http.get<IReckoConsumer[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 
     getConsumerTypes(partnerName: string): Observable<string[]> {
-        const url = `${this.baseApiUrl}/types/${partnerName}`;
+        const url = `${this.baseApiUrl}/${partnerName}/types`;
         return this.http.get<string[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 

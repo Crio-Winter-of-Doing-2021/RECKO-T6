@@ -1,8 +1,8 @@
 package com.lonewolf.recko.service.xero;
 
 import com.lonewolf.recko.config.BeanNameRepository;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Consumer;
-import com.lonewolf.recko.entity.PartnerCredential;
 import com.lonewolf.recko.entity.Transaction;
 import com.lonewolf.recko.model.xero.consumer.Account;
 import com.lonewolf.recko.model.xero.consumer.AccountStatus;
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component(BeanNameRepository.Xero_Utils)
 public class Utils {
@@ -22,7 +23,7 @@ public class Utils {
     private Utils() {
     }
 
-    private LocalDate parseXeroAccountDate(String date) {
+    private LocalDate parseXeroActivityDate(String date) {
         int startIndex = date.indexOf('(');
         int endIndex = date.indexOf('+');
         return Instant
@@ -31,32 +32,36 @@ public class Utils {
                 .toLocalDate();
     }
 
-    public Consumer parseXeroConsumer(Account account, PartnerCredential credential) {
+    public Consumer parseXeroConsumer(Account account, CompanyCredential credential) {
         Consumer consumer = new Consumer(
                 account.getId(),
                 account.getName(),
                 Account_Balance,
-                parseXeroAccountDate(account.getDate()),
+                parseXeroActivityDate(account.getDate()),
                 account.getType().getName(),
                 credential);
         consumer.setActive(account.getStatus() == AccountStatus.Active);
         return consumer;
     }
 
-    private LocalDate parseXeroTransactionDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(date.substring(0, 10), formatter);
-    }
+    public List<Transaction> parseXeroTransaction(CompanyCredential credential, String transactionDate, List<Payment> payments) {
+        List<Transaction> transactions = new ArrayList<>();
 
-    public Transaction parseXeroTransaction(Payment payment, PartnerCredential credential) {
-        return new Transaction(
-                payment.getTransactionId(),
-                payment.getAccount().getAccountId(),
-                payment.getAccount().getHolderName(),
-                payment.getReceiver().getName(),
-                payment.getType(),
-                payment.getAmount(),
-                parseXeroTransactionDate(payment.getTransactionDate()),
-                credential);
+        for (Payment payment : payments) {
+            Transaction transaction = new Transaction();
+
+            transaction.setAccountId(payment.getAccountId());
+            transaction.setHolderName(payment.getAccountHolder());
+
+            transaction.setAmount(Math.abs(payment.getAmount()));
+            transaction.setTransactionType(payment.getAmount() >= 0 ? "Debit" : "Credit");
+            transaction.setDate(parseXeroActivityDate(transactionDate));
+
+            transaction.setCredential(credential);
+
+            transactions.add(transaction);
+        }
+
+        return transactions;
     }
 }

@@ -16,14 +16,16 @@ import { IReckoPartner } from '../models/recko-partner.model';
 export class TransactionListComponent implements OnInit {
 
   transactions: ITransaction[] = [];
+  storedTransactions: ITransaction[] = [];
   partners: IReckoPartner[] = [];
 
   selectedPartner: string = null;
+  nameFilter: string = null;
+  dateFilter: string = null;
 
   contentLoaded: number = 2;
 
   holderAscending = null;
-  receiverAscending = null;
   typeAscending = null;
   amountAscending = null;
   dateAscending = false;
@@ -32,16 +34,13 @@ export class TransactionListComponent implements OnInit {
   currentPage: number = 1;
   readonly maxPaginationSize = 100;
 
-  constructor(private transactionService: ReckoTransactionService, private partnerService: ReckoPartnerService, private router: Router) { }
+  constructor(private transactionService: ReckoTransactionService,
+    private partnerService: ReckoPartnerService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.fetchTransactions();
     this.fetchPartners();
-  }
-
-  private resetOrderFilters() {
-    this.holderAscending = this.receiverAscending = this.amountAscending = this.typeAscending = null;
-    this.dateAscending = false;
   }
 
   fetchTransactions() {
@@ -51,6 +50,7 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.fetchTransactions().subscribe((data: ITransaction[]) => {
       this.contentLoaded++;
       this.transactions = data;
+      this.storedTransactions = data;
     }, (error: IResponse) => {
       this.contentLoaded++;
 
@@ -67,6 +67,9 @@ export class TransactionListComponent implements OnInit {
       this.transactionService.fetchPartnerTransactions(this.selectedPartner).subscribe((transactions: ITransaction[]) => {
         this.contentLoaded++;
         this.transactions = transactions;
+        this.storedTransactions = transactions;
+
+        this.applySearchFilters();
       }, (error: IResponse) => {
         this.contentLoaded++;
 
@@ -92,29 +95,48 @@ export class TransactionListComponent implements OnInit {
     })
   }
 
+  applySearchFilters() {
+
+    let filteredTransactions: ITransaction[] = [];
+
+    if (this.nameFilter !== null && this.nameFilter.length > 0) {
+      filteredTransactions = this.storedTransactions
+        .filter((con) => con.holder.toLowerCase().indexOf(this.nameFilter.toLowerCase()) > -1);
+    }
+
+    if (this.dateFilter !== null && this.dateFilter.length > 0) {
+      if (filteredTransactions.length === 0) {
+        filteredTransactions = this.storedTransactions
+          .filter((con) => con.date.toString() === this.dateFilter);
+      } else {
+        filteredTransactions = filteredTransactions
+          .filter((con) => con.date.toString() === this.dateFilter);
+      }
+    }
+
+    this.transactions = filteredTransactions;
+  }
+
+  resetSearchFilters() {
+    this.selectedPartner = null;
+    this.fetchTransactions();
+  }
+
+  disableSearchFilters(): boolean {
+    return this.nameFilter === null && this.dateFilter === null;
+  }
+
+  private resetOrderFilters() {
+    this.holderAscending = this.amountAscending = this.typeAscending = null;
+    this.dateAscending = false;
+  }
+
   changeHolderOrder() {
     this.holderAscending = !this.holderAscending;
     this.transactions.sort((a, b) => {
       return (this.holderAscending)
-        ? a.holderName.toLowerCase().localeCompare(b.holderName.toLowerCase())
-        : b.holderName.toLowerCase().localeCompare(a.holderName.toLowerCase());
-    })
-  }
-
-  changeReceiverOrder() {
-    this.receiverAscending = !this.receiverAscending;
-    this.transactions.sort((a, b) => {
-      if (a.receiver == null) {
-        return 1;
-      }
-
-      if (b.receiver == null) {
-        return -1;
-      }
-
-      return (this.receiverAscending)
-        ? a.receiver.toLowerCase().localeCompare(b.receiver.toLowerCase())
-        : b.receiver.toLowerCase().localeCompare(a.receiver.toLowerCase());
+        ? a.holder.toLowerCase().localeCompare(b.holder.toLowerCase())
+        : b.holder.toLowerCase().localeCompare(a.holder.toLowerCase());
     })
   }
 
@@ -138,8 +160,6 @@ export class TransactionListComponent implements OnInit {
     if (a !== b) {
       const aElements: number[] = a.split("-").map(d => parseInt(d));
       const bElements: number[] = b.split("-").map(d => parseInt(d));
-
-      console.log(aElements, bElements);
 
       if (aElements[0] !== bElements[0]) return aElements[0] - bElements[0];
       else {

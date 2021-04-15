@@ -1,12 +1,11 @@
-import { IPartnerCredential } from './parther-credential.model';
+import { ICompanyCredential } from './company-credential.model';
 
 export interface ITransaction {
     id: string;
     accountId: string;
-    holderName: string;
-    receiver: string;
+    holder: string;
     type: string;
     amount: number;
     date: Date;
-    credential: IPartnerCredential;
+    credential: ICompanyCredential;
 }

@@ -11,21 +11,12 @@ import lombok.Setter;
 @Setter(AccessLevel.NONE)
 public class Payment {
 
-    @JsonProperty("BankTransactionID")
-    private String transactionId;
+    @JsonProperty("AccountID")
+    private String accountId;
 
-    @JsonProperty("BankAccount")
-    private TransactionAccount account;
+    @JsonProperty("AccountName")
+    private String accountHolder;
 
-    @JsonProperty("Contact")
-    private TransactionContact receiver;
-
-    @JsonProperty("Type")
-    private String type;
-
-    @JsonProperty("Total")
+    @JsonProperty("GrossAmount")
     private double amount;
-
-    @JsonProperty("DateString")
-    private String transactionDate;
 }

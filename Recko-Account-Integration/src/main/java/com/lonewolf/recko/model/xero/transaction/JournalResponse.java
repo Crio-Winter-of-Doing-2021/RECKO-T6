@@ -6,11 +6,13 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Setter(AccessLevel.NONE)
-public class TransactionContact {
+public class JournalResponse {
 
-    @JsonProperty("Name")
-    private String name;
+    @JsonProperty("Journals")
+    private List<Journal> journals;
 }

@@ -1,4 +1,4 @@
-package com.lonewolf.recko.model.xero.consumer;
+package com.lonewolf.recko.model.xero;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.lonewolf.recko.model.exception.ReckoException;

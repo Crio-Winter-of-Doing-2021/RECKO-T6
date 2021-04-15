@@ -34,5 +34,5 @@ public class Partner {
     @OneToMany(mappedBy = "partner")
     @Setter(AccessLevel.NONE)
     @JsonIgnore
-    private final List<PartnerCredential> credentials = new ArrayList<>();
+    private final List<CompanyCredential> credentials = new ArrayList<>();
 }

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
-
 @Service
 public class AuthService {
 
@@ -25,23 +23,15 @@ public class AuthService {
         this.modRepository = modRepository;
     }
 
-    @SuppressWarnings("unused")
-    private static String encodePassword(String password) {
-        return Base64.getEncoder().encodeToString(password.getBytes());
-    }
-
-    public boolean adminLogin(@NonNull Admin admin) {
-        if (adminRepository.findByAdminNameAndPassword(
-                admin.getAdminName(),
-                admin.getPassword())
-                .orElse(null) == null) {
+    public Admin adminLogin(@NonNull Admin admin) {
+        Admin existingAdmin = adminRepository.findByAdminNameAndPassword(admin.getAdminName(), admin.getPassword()).orElse(null);
+        if (existingAdmin == null) {
             throw new ReckoException("incorrect username or password specified", HttpStatus.UNAUTHORIZED);
         }
-
-        return true;
+        return existingAdmin;
     }
 
-    public boolean adminChangePassword(@NonNull ChangePassword adminPass) {
+    public Admin adminChangePassword(@NonNull ChangePassword adminPass) {
         Admin admin = adminRepository.findById(adminPass.getUsername()).orElse(null);
         if (admin == null) {
             throw new ReckoException("incorrect username specified", HttpStatus.UNAUTHORIZED);
@@ -56,30 +46,18 @@ public class AuthService {
         }
 
         admin.setPassword(adminPass.getNewPassword());
-        adminRepository.saveAndFlush(admin);
-
-        return true;
+        return adminRepository.saveAndFlush(admin);
     }
 
-    public String adminForgotPassword(@NonNull String adminName) {
-        Admin admin = adminRepository.findById(adminName).orElse(null);
-        if (admin == null) {
-            throw new ReckoException("incorrect username specified", HttpStatus.UNAUTHORIZED);
-        }
-        return admin.getPassword();
-    }
-
-    public boolean moderatorLogin(@NonNull Moderator moderator) {
-        if (modRepository.findByModeratorNameAndPassword(
-                moderator.getModeratorName(),
-                moderator.getPassword())
-                .orElse(null) == null) {
+    public Moderator moderatorLogin(@NonNull Moderator mod) {
+        Moderator existingModerator = modRepository.findByModeratorNameAndPassword(mod.getModeratorName(), mod.getPassword()).orElse(null);
+        if (existingModerator == null) {
             throw new ReckoException("incorrect username or password specified", HttpStatus.UNAUTHORIZED);
         }
-        return true;
+        return existingModerator;
     }
 
-    public boolean moderatorChangePassword(@NonNull ChangePassword modPassword) {
+    public Moderator moderatorChangePassword(@NonNull ChangePassword modPassword) {
         Moderator moderator = modRepository.findById(modPassword.getUsername()).orElse(null);
 
         if (moderator == null) {
@@ -95,16 +73,6 @@ public class AuthService {
         }
 
         moderator.setPassword(modPassword.getNewPassword());
-        modRepository.saveAndFlush(moderator);
-
-        return true;
-    }
-
-    public String moderatorForgotPassword(@NonNull String moderatorName) {
-        Moderator moderator = modRepository.findById(moderatorName).orElse(null);
-        if (moderator == null) {
-            throw new ReckoException("incorrect username specified", HttpStatus.UNAUTHORIZED);
-        }
-        return moderator.getPassword();
+        return modRepository.saveAndFlush(moderator);
     }
 }

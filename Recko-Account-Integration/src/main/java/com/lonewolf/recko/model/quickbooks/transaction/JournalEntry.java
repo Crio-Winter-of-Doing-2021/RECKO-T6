@@ -6,14 +6,16 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Setter(AccessLevel.NONE)
-public class TransactionAccount {
+public class JournalEntry {
 
-    @JsonProperty("name")
-    private String payer;
+    @JsonProperty("TxnDate")
+    private String transactionDate;
 
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("Line")
+    private List<Payment> payments;
 }

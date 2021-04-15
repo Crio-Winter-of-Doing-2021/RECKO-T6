@@ -7,6 +7,7 @@ import { ReckoPartnerService } from '../../services/recko-partner.service';
 import { IReckoConsumer } from '../../models/recko-consumer.model';
 import { IReckoPartner } from '../../models/recko-partner.model';
 import { IResponse } from '../../models/response.model';
+import { StorageKey } from '../../models/storage-key.model';
 
 @Component({
   selector: 'app-consumer-form',
@@ -24,6 +25,9 @@ export class ConsumerFormComponent implements OnInit {
     credential: {
       email: null,
       password: null,
+      company: {
+        id: null
+      },
       partner: {
         name: null,
         description: null
@@ -44,10 +48,11 @@ export class ConsumerFormComponent implements OnInit {
     if (queryParams) {
       const consumer = <IReckoConsumer>queryParams.consumer;
       this.consumer = consumer;
-
       this.selectedPartner = consumer.credential.partner.name;
       this.selectedAccountType = consumer.type;
     }
+
+    this.consumer.credential.company.id = localStorage.getItem(StorageKey.company);
   }
 
   ngOnInit(): void {

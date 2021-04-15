@@ -5,6 +5,7 @@ import { ReckoAuthService } from '../../services/recko-auth.service';
 
 import { IChangePassword } from '../../models/change-password.model';
 import { IResponse } from '../../models/response.model';
+import { IReckoOperator } from '../../models/recko-operator.model';
 
 @Component({
   selector: 'app-change-password',
@@ -28,9 +29,9 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void { }
 
   changePasswordAdmin() {
-    this.authService.changePasswordAdmin(this.operatorPass).subscribe((response: IResponse) => {
+    this.authService.changePasswordAdmin(this.operatorPass).subscribe((response: IReckoOperator) => {
       this.isLoading = false;
-      window.alert(response.message);
+      window.alert(response.username === this.operatorPass.username ? "Password Changed Successfully" : "Password Couldn't Be Changed");
       this.logout();
     }, (error: IResponse) => {
       this.isLoading = false;
@@ -39,9 +40,9 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePasswordModerator() {
-    this.authService.changePasswordModerator(this.operatorPass).subscribe((response: IResponse) => {
+    this.authService.changePasswordModerator(this.operatorPass).subscribe((response: IReckoOperator) => {
       this.isLoading = false;
-      window.alert(response.message);
+      window.alert(response.username === this.operatorPass.username ? "Password Changed Successfully" : "Password Couldn't Be Changed");
       this.logout();
     }, (error: IResponse) => {
       this.isLoading = false;

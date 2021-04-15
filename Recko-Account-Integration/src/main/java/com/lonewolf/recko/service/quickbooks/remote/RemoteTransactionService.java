@@ -1,9 +1,10 @@
 package com.lonewolf.recko.service.quickbooks.remote;
 
 import com.lonewolf.recko.config.BeanNameRepository;
-import com.lonewolf.recko.entity.PartnerCredential;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Transaction;
 import com.lonewolf.recko.model.exception.ReckoException;
+import com.lonewolf.recko.model.quickbooks.transaction.JournalEntry;
 import com.lonewolf.recko.model.quickbooks.transaction.TransactionResponse;
 import com.lonewolf.recko.service.factory.remote.RemoteTokenContract;
 import com.lonewolf.recko.service.factory.remote.RemoteTransactionContract;
@@ -14,30 +15,32 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service(BeanNameRepository.Quickbooks_Remote_Transaction)
 @SuppressWarnings({"rawtypes"})
 public class RemoteTransactionService implements RemoteTransactionContract {
 
-    private final RestTemplate template = new RestTemplate();
+    private final RestTemplate template;
     private final Utils utils;
     private final RemoteTokenContract tokenContract;
 
     @Autowired
     public RemoteTransactionService(@Qualifier(BeanNameRepository.Quickbooks_Remote_Token) RemoteTokenContract tokenContract,
+                                    @Qualifier(BeanNameRepository.Custom_Rest_Template) RestTemplate template,
                                     @Qualifier(BeanNameRepository.Quickbooks_Utils) Utils utils) {
         this.tokenContract = tokenContract;
+        this.template = template;
         this.utils = utils;
     }
 
     @Override
-    public List<Transaction> getPartnerTransactions(PartnerCredential credential) {
+    public List<Transaction> getPartnerTransactions(CompanyCredential credential) {
         tokenContract.refreshToken(credential);
 
-        String query = "select * from Payment";
+        String query = "select * from JournalEntry";
         String url = "https://sandbox-quickbooks.api.intuit.com/v3/company/"
                 + credential.getApplicationId()
                 + "/query?query="
@@ -55,9 +58,11 @@ public class RemoteTransactionService implements RemoteTransactionContract {
             throw new ReckoException("transactions couldn't be changed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return response.getCollection().getPayments()
-                .stream()
-                .map(payment -> utils.parseQuickbooksTransaction(payment, credential))
-                .collect(Collectors.toUnmodifiableList());
+        List<Transaction> transactions = new ArrayList<>();
+        for (JournalEntry journalEntry : response.getCollection().getEntries()) {
+            transactions.addAll(utils.parseQuickbooksTransaction(credential, journalEntry));
+        }
+
+        return transactions;
     }
 }

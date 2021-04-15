@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "credentials")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class PartnerCredential {
+public class CompanyCredential {
 
     @Id
     @Column
@@ -25,25 +25,20 @@ public class PartnerCredential {
     private long id;
 
     @Column(name = "email")
-    @Setter(AccessLevel.NONE)
     private String email;
 
     @Column(name = "password")
-    @Setter(AccessLevel.NONE)
     private String password;
 
     @Column(name = "client_id")
-    @Setter(AccessLevel.NONE)
     @JsonIgnore
     private String clientId;
 
     @Column(name = "client_secret")
-    @Setter(AccessLevel.NONE)
     @JsonIgnore
     private String clientSecret;
 
     @Column(name = "application_id")
-    @Setter(AccessLevel.NONE)
     @JsonIgnore
     private String applicationId;
 
@@ -64,8 +59,10 @@ public class PartnerCredential {
     private LocalDateTime lastAccess;
 
     @ManyToOne
-    @Setter(AccessLevel.NONE)
     private Partner partner;
+
+    @ManyToOne
+    private Company company;
 
     @OneToMany(mappedBy = "credential")
     @Setter(AccessLevel.NONE)

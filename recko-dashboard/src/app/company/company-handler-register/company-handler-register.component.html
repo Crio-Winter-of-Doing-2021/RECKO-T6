@@ -1,0 +1,78 @@
+<div class="jumbotron">
+    <form class="form" #handlerRegister="ngForm" *ngIf="!isLoading; else processing">
+
+        <h1 class="text-capitalize text-center font-weight-bolder">register company handler</h1>
+
+        <div class="form-group">
+            <label for="id" class="font-weight-bolder text-capitalzie">Enter Company Identification</label>
+            <input type="text" placeholder="Enter Company Identification" required class="form-control" id="id"
+                name="id" [(ngModel)]="handler.companyId" #id="ngModel">
+
+            <div *ngIf="id.touched && id.invalid">
+                <div *ngIf="id.errors.required" class="alert alert-danger text-capitalize">
+                    Company Identification is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="font-weight-bolder text-capitalzie">Enter Company Password</label>
+            <input type="password" placeholder="Enter Company Password" required class="form-control" id="password"
+                name="password" [(ngModel)]="handler.companyPassword" #password="ngModel">
+
+            <div *ngIf="password.touched && password.invalid">
+                <div *ngIf="password.errors.required" class="alert alert-danger text-capitalize">
+                    Company password is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="hname" class="font-weight-bolder text-capitalzie">Enter Handler Identification</label>
+            <input type="text" placeholder="Enter Handler Identification" required class="form-control" id="hname"
+                name="hname" [(ngModel)]="handler.handlerName" #hname="ngModel">
+
+            <div *ngIf="hname.touched && hname.invalid">
+                <div *ngIf="hname.errors.required" class="alert alert-danger text-capitalize">
+                    Handler Identification is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="hpassword" class="font-weight-bolder text-capitalzie">Enter Handler Password</label>
+            <input type="password" placeholder="Enter Handler Password" required class="form-control" id="hpassword"
+                name="hpassword" [(ngModel)]="handler.handlerPassword" #hpassword="ngModel">
+
+            <div *ngIf="hpassword.touched && hpassword.invalid">
+                <div *ngIf="hpassword.errors.required" class="alert alert-danger text-capitalize">
+                    Handler password is mandatory
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="font-weight-bolder" for="hrole">Choose Handler Roler</label>
+            <select class="form-control" id="hrole" required name="hrole" [(ngModel)]="selectedRole" #hrole="ngModel">
+                <option *ngFor="let role of roles" class="text-capitalize" [value]="role">
+                    {{role}}
+                </option>
+            </select>
+
+            <div *ngIf="hrole.touched && hrole.invalid">
+                <div class="alert alert-danger text-capitalize" *ngIf="hrole.errors.required">
+                    Handler role must be selected
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" value="Register Company Handler" class="btn btn-primary" (click)="registerCompanyHandler()"
+            [disabled]="handlerRegister.invalid">
+        &nbsp;
+        <input type="button" value="Cancel" class="btn btn-danger" (click)="cancelRegisterCompnayHandler()">
+    </form>
+
+    <ng-template #processing>
+        <app-loading></app-loading>
+    </ng-template>
+</div>

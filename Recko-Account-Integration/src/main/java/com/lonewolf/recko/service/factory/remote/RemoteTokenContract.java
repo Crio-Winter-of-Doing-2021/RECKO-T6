@@ -1,10 +1,8 @@
 package com.lonewolf.recko.service.factory.remote;
 
-import com.lonewolf.recko.entity.PartnerCredential;
+import com.lonewolf.recko.entity.CompanyCredential;
 
 public interface RemoteTokenContract {
 
-    void reauthorize(PartnerCredential credential);
-
-    void refreshToken(PartnerCredential credential);
+    void refreshToken(CompanyCredential credential);
 }

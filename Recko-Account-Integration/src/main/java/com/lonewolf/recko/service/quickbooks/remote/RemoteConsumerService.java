@@ -1,8 +1,8 @@
 package com.lonewolf.recko.service.quickbooks.remote;
 
 import com.lonewolf.recko.config.BeanNameRepository;
+import com.lonewolf.recko.entity.CompanyCredential;
 import com.lonewolf.recko.entity.Consumer;
-import com.lonewolf.recko.entity.PartnerCredential;
 import com.lonewolf.recko.model.exception.ReckoException;
 import com.lonewolf.recko.model.quickbooks.consumer.Account;
 import com.lonewolf.recko.model.quickbooks.consumer.AccountResponse;
@@ -32,8 +32,8 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     private final Utils utils;
 
     @Autowired
-    public RemoteConsumerService(@Qualifier(BeanNameRepository.Custom_Rest_Template) RestTemplate template,
-                                 @Qualifier(BeanNameRepository.Quickbooks_Remote_Token) RemoteTokenContract tokenContract,
+    public RemoteConsumerService(@Qualifier(BeanNameRepository.Quickbooks_Remote_Token) RemoteTokenContract tokenContract,
+                                 @Qualifier(BeanNameRepository.Custom_Rest_Template) RestTemplate template,
                                  @Qualifier(BeanNameRepository.Quickbooks_Utils) Utils utils) {
         this.template = template;
         this.tokenContract = tokenContract;
@@ -41,7 +41,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     }
 
     @Override
-    public List<Consumer> fetchConsumers(PartnerCredential credential) {
+    public List<Consumer> fetchConsumers(CompanyCredential credential) {
         tokenContract.refreshToken(credential);
 
         String query = "select * from Account";
@@ -75,7 +75,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     }
 
     @Override
-    public Consumer addConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer addConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://sandbox-quickbooks.api.intuit.com/v3/company/"
@@ -104,7 +104,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     }
 
     @Override
-    public Consumer updateConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer updateConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://sandbox-quickbooks.api.intuit.com/v3/company/"
@@ -136,7 +136,7 @@ public class RemoteConsumerService implements RemoteConsumerContract {
     }
 
     @Override
-    public Consumer deleteConsumer(PartnerCredential credential, Consumer consumer) {
+    public Consumer deleteConsumer(CompanyCredential credential, Consumer consumer) {
         tokenContract.refreshToken(credential);
 
         String url = "https://sandbox-quickbooks.api.intuit.com/v3/company/"

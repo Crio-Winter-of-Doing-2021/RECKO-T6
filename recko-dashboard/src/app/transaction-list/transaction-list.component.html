@@ -5,13 +5,9 @@
 
     <hr class="my-4">
 
-    <!-- <div class="text-center">
-        <button class="btn btn-lg btn-primary">Add Transaction</button>
-    </div> -->
-
     <div class="form-group">
         <label for="partner" class="font-weight-bolder text-capitallize">Choose Recko Partner</label>
-        <select class="form-control" id="partner" name="partner" [(ngModel)]="selectedPartner"
+        <select class="form-control text-capitalize" id="partner" name="partner" [(ngModel)]="selectedPartner"
             (change)="fetchPartnerTransactions()">
             <option *ngFor="let partner of partners" [value]="partner.name">
                 {{partner.description}}
@@ -19,19 +15,32 @@
         </select>
     </div>
 
+    <form class="form" #transactionForm="ngForm">
+        <div class="form-group">
+            <label for="nFilter" class="font-weight-bolder text-capitalize">Enter Name</label>
+            <input type="text" placeholder="Enter Name to Search" class="form-control" id="nFilter" name="nFilter"
+                [(ngModel)]="nameFilter">
+        </div>
+
+        <div class="form-group">
+            <label for="dFilter" class="font-weight-bolder text-capitalize">Enter Transaction Date</label>
+            <input type="date" class="form-control" id="dFilter" name="dFilter" [(ngModel)]="dateFilter">
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Apply Filters" [disabled]="disableSearchFilters()"
+            (click)="applySearchFilters()">
+        &nbsp;
+        <input type="reset" class="btn btn-warning" value="Reset Filters" (click)="resetSearchFilters()">
+    </form>
+
     <table class="table" *ngIf="contentLoaded === 2; else contentLoading">
         <thead>
+            <th>Account ID</th>
+
             <th class="clickable-head" (click)="changeHolderOrder()">
                 Payer
                 <i *ngIf="holderAscending !== null"
                     [ngClass]="{'bi bi-caret-up-fill' : holderAscending, 'bi bi-caret-down-fill': !holderAscending}">
-                </i>
-            </th>
-
-            <th class="clickable-head" (click)="changeReceiverOrder()">
-                Receiver
-                <i *ngIf="receiverAscending !== null"
-                    [ngClass]="{'bi bi-caret-up-fill' : receiverAscending, 'bi bi-caret-down-fill': !receiverAscending}">
                 </i>
             </th>
 
@@ -57,7 +66,6 @@
             </th>
 
             <th>Recko Partner</th>
-            <th>Recko Associated Email</th>
         </thead>
         <tbody>
             <app-transaction *ngFor="let transaction of transactions | paginate: {

@@ -20,13 +20,14 @@ public class TransactionController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<Transaction> controlGetTransactions() {
-        return service.getTransactions();
+    @GetMapping("/{id}")
+    public List<Transaction> controlGetTransactions(@PathVariable("id") String companyId) {
+        return service.getTransactions(companyId);
     }
 
-    @GetMapping("/{partner}")
-    public List<Transaction> controlGetPartnerTransactions(@PathVariable("partner") PartnerNameRepository nameRepository) {
-        return service.getPartnerTransactions(nameRepository);
+    @GetMapping("/{id}/{partner}")
+    public List<Transaction> controlGetPartnerTransactions(@PathVariable("partner") PartnerNameRepository nameRepository,
+                                                           @PathVariable("id") String companyId) {
+        return service.getPartnerTransactions(nameRepository, companyId);
     }
 }

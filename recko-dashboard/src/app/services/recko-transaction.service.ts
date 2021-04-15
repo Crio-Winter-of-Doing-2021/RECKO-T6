@@ -7,6 +7,7 @@ import { ServiceErrorHandler } from './utils/service-error-handler';
 
 import { environment } from '../../environments/environment';
 import { ITransaction } from '../models/transaction.model';
+import { StorageKey } from '../models/storage-key.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ import { ITransaction } from '../models/transaction.model';
 export class ReckoTransactionService {
 
     private readonly baseApiUrl = `${environment.apiUrl}/api/transactions`;
+
     private readonly httpOptions = {
         headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
@@ -21,11 +23,12 @@ export class ReckoTransactionService {
     constructor(private http: HttpClient, private handler: ServiceErrorHandler) { }
 
     fetchTransactions(): Observable<ITransaction[]> {
-        return this.http.get<ITransaction[]>(this.baseApiUrl, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+        const url = `${this.baseApiUrl}/${localStorage.getItem(StorageKey.company)}`;
+        return this.http.get<ITransaction[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 
     fetchPartnerTransactions(partner: string): Observable<ITransaction[]> {
-        const url = `${this.baseApiUrl}/${partner}`;
+        const url = `${this.baseApiUrl}/${localStorage.getItem(StorageKey.company)}/${partner}`;
         return this.http.get<ITransaction[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 }

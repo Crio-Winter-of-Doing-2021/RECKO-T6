@@ -2,6 +2,7 @@ package com.lonewolf.recko.model.xero.consumer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lonewolf.recko.model.xero.AccountType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;

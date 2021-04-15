@@ -17,9 +17,14 @@ import java.time.LocalDate;
 public class Consumer {
 
     @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    @JsonIgnore
+    private long id;
+
     @Column(name = "consumer_id")
     @JsonProperty(value = "id")
-    @Setter(AccessLevel.NONE)
     private String consumerId;
 
     @Column(nullable = false)
@@ -50,13 +55,13 @@ public class Consumer {
 
     @ManyToOne
     @Setter(AccessLevel.NONE)
-    private PartnerCredential credential;
+    private CompanyCredential credential;
 
     public Consumer() {
     }
 
     public Consumer(String consumerId, String name, double amount, LocalDate date, String type,
-                    PartnerCredential credential) {
+                    CompanyCredential credential) {
         this.consumerId = consumerId;
         this.name = name;
         this.amount = amount;
