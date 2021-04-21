@@ -18,6 +18,7 @@ export class CompanyHandlerRegisterComponent implements OnInit {
     companyId: null,
     companyPassword: null,
     handlerName: null,
+    handlerEmail: null,
     handlerPassword: null
   };
 

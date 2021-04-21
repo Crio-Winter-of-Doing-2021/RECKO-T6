@@ -50,6 +50,8 @@ public class Utils {
         for (Payment payment : payments) {
             Transaction transaction = new Transaction();
 
+            transaction.setTransactionId(payment.getPaymentId());
+
             transaction.setAccountId(payment.getAccountId());
             transaction.setHolderName(payment.getAccountHolder());
 

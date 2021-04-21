@@ -5,9 +5,10 @@ public class BeanNameRepository {
     private BeanNameRepository() {
     }
 
-    //    Quickbooks Bean Names
     public static final String Custom_Rest_Template = "CustomRestTemplate";
+    public static final String Mail_Sender_Email_Address = "MailSenderEmailAddress";
 
+    //    Quickbooks Bean Names
     public static final String Quickbooks_Credential_Register = "QuickbooksCredentialRegister";
 
     public static final String Quickbooks_Host_Consumer = "QuickbooksHostConsumer";

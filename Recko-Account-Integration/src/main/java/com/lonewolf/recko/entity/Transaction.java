@@ -21,6 +21,9 @@ public class Transaction {
     @Setter(AccessLevel.NONE)
     private long id;
 
+    @Column(name = "transaction_id")
+    private String transactionId;
+
     @Column(name = "account_id")
     private String accountId;
 

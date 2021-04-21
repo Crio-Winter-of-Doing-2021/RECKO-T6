@@ -19,8 +19,6 @@ export class ConsumerComponent implements OnInit {
 
   @ViewChild("consumerRef", { static: true }) consumerRef: TemplateRef<any>;
 
-  isLoading: boolean = false;
-
   constructor(private viewContainerRef: ViewContainerRef,
     private router: Router,
     private consumerService: ReckoConsumerService,
@@ -36,14 +34,14 @@ export class ConsumerComponent implements OnInit {
 
   deleteConsumer() {
     const toDelete: boolean = window.confirm("Are You Sure To Delete or Not ?");
-    if (toDelete) {
-      this.isLoading = true;
 
+    if (toDelete) {
       this.consumerService.deleteConsumer(this.consumer).subscribe((response: IResponse) => {
-        this.isLoading = false;
         window.alert(response.message);
         this.delEmitter.emit(this.consumer);
         this.router.navigate(["consumer-list"]);
+      }, (error: IResponse) => {
+        window.alert(error.message);
       })
     }
   }

@@ -17,6 +17,9 @@ public class Moderator {
     @JsonProperty("username")
     private String moderatorName;
 
+    @Column
+    private String email;
+
     @Column(nullable = false)
     private String password;
 

@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 @Component(BeanNameRepository.Xero_Credential_Register)
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class RemoteCredentialRegisterService implements RemoteCredentialRegisterContract {
 
     private final CompanyRepository companyRepository;
@@ -97,7 +97,7 @@ public class RemoteCredentialRegisterService implements RemoteCredentialRegister
         credential.setPassword(companyCredential.getPassword().trim());
 
         credential.setCompany(company);
-        credential.setPartner(partnerService.getPartner(PartnerNameRepository.QUICKBOOKS));
+        credential.setPartner(partnerService.getPartner(PartnerNameRepository.XERO));
 
         credential.setLastAccess(LocalDateTime.now());
 

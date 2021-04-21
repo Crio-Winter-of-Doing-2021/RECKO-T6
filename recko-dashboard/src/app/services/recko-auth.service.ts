@@ -9,6 +9,8 @@ import { ServiceErrorHandler } from './utils/service-error-handler';
 import { IChangePassword } from '../models/change-password.model';
 import { IReckoOperator } from '../models/recko-operator.model';
 import { StorageKey } from '../models/storage-key.model';
+import { ICompanyHandler } from '../models/company-handler.model';
+import { IResponse } from '../models/response.model';
 
 @Injectable({
     providedIn: 'root'
@@ -71,5 +73,15 @@ export class ReckoAuthService {
     changePasswordModerator(modPass: IChangePassword): Observable<IReckoOperator> {
         const url = `${this.baseApiUrl}/moderatorChangePassword`;
         return this.http.patch<IReckoOperator>(url, modPass, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    forgotPasswordAdmin(companyHandler: ICompanyHandler): Observable<IResponse> {
+        const url = `${this.baseApiUrl}/adminForgotPassword`;
+        return this.http.post<IResponse>(url, companyHandler, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    forgotPasswordModerator(companyHandler: ICompanyHandler): Observable<IResponse> {
+        const url = `${this.baseApiUrl}/moderatorForgotPassword`;
+        return this.http.post<IResponse>(url, companyHandler, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 }

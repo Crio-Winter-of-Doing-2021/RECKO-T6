@@ -24,6 +24,7 @@ import java.util.Collections;
 public class RemoteTokenService implements RemoteTokenContract {
 
     private static final long Access_Token_validity = 3600;
+    private static final long Refresh_Token_Validity = 99;
 
     private final RestTemplate template;
     private final CompanyCredentialRepository credentialRepository;

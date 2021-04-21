@@ -22,6 +22,8 @@ public class RegisterCompanyHandler {
 
     private String handlerName;
 
+    private String handlerEmail;
+
     private String handlerPassword;
 
     @JsonProperty("role")

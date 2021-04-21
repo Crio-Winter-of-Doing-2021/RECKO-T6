@@ -43,9 +43,15 @@ export class TransactionListComponent implements OnInit {
     this.fetchPartners();
   }
 
+  private resetPagination() {
+    this.currentPage = 1;
+  }
+
   fetchTransactions() {
     this.contentLoaded--;
+
     this.resetOrderFilters();
+    this.resetPagination();
 
     this.transactionService.fetchTransactions().subscribe((data: ITransaction[]) => {
       this.contentLoaded++;
@@ -61,7 +67,9 @@ export class TransactionListComponent implements OnInit {
 
   fetchPartnerTransactions() {
     this.contentLoaded--;
+
     this.resetOrderFilters();
+    this.resetPagination();
 
     if (this.selectedPartner !== null) {
       this.transactionService.fetchPartnerTransactions(this.selectedPartner).subscribe((transactions: ITransaction[]) => {
@@ -115,6 +123,9 @@ export class TransactionListComponent implements OnInit {
           .filter((con) => con.date.toString() === this.dateFilter);
       }
     }
+
+    this.resetOrderFilters();
+    this.resetPagination();
 
     this.transactions = filteredTransactions;
   }

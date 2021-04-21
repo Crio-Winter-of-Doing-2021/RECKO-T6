@@ -22,6 +22,7 @@ import java.util.Base64;
 public class RemoteTokenService implements RemoteTokenContract {
 
     private static final long Access_Token_Validity = 1800;
+    private static final long Refresh_Token_Validity = 59;
 
     private final RestTemplate template;
     private final CompanyCredentialRepository credentialRepository;
@@ -58,7 +59,7 @@ public class RemoteTokenService implements RemoteTokenContract {
 
         Token newToken = responseEntity.getBody();
         if (newToken == null) {
-            throw new ReckoException("error occurred fetching accounts", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ReckoException("error occurred fetching new token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         credential.setAccessToken(newToken.getAccessToken());

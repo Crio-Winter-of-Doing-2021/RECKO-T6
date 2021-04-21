@@ -30,7 +30,8 @@
         <input type="submit" class="btn btn-primary" value="Apply Filters" [disabled]="disableSearchFilters()"
             (click)="applySearchFilters()">
         &nbsp;
-        <input type="reset" class="btn btn-warning" value="Reset Filters" (click)="resetSearchFilters()">
+        <input type="reset" class="btn btn-warning" value="Reset Filters" [disabled]="disableSearchFilters()"
+            (click)="resetSearchFilters()">
     </form>
 
     <table class="table" *ngIf="contentLoaded === 2; else contentLoading">

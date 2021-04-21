@@ -17,6 +17,9 @@ public class Admin {
     @JsonProperty("username")
     private String adminName;
 
+    @Column
+    private String email;
+
     @Column(nullable = false)
     private String password;
 

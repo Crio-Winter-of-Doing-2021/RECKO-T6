@@ -1,6 +1,11 @@
 # ignore third party api integration testing folders
+
 /xero-tests
+
 /quickbooks-tests
 
+
+
 # ignore jupyter notebook checkpoints
+
 /.ipynb_checkpoints

@@ -69,7 +69,9 @@ public class CompanyService {
         }
 
         Admin newAdmin = new Admin();
-        newAdmin.setAdminName(handler.getHandlerName());
+
+        newAdmin.setAdminName(handler.getHandlerName().toLowerCase());
+        newAdmin.setEmail(handler.getHandlerEmail().toLowerCase());
         newAdmin.setPassword(handler.getHandlerPassword());
         newAdmin.setCompany(company);
 
@@ -92,7 +94,9 @@ public class CompanyService {
         }
 
         Moderator newModerator = new Moderator();
-        newModerator.setModeratorName(handler.getHandlerName());
+
+        newModerator.setModeratorName(handler.getHandlerName().toLowerCase());
+        newModerator.setEmail(handler.getHandlerEmail().toLowerCase());
         newModerator.setPassword(handler.getHandlerPassword());
         newModerator.setCompany(company);
 

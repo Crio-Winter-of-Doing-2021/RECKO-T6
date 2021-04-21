@@ -10,55 +10,66 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="collapse navbar-collapse text-uppercase font-weight-bolder" id="navbarNavAltMarkup">
         <div class="navbar-nav mr-auto">
-
-            <a class="nav-item nav-link active text-primary text-uppercase mr-auto" data-toggle="collapse"
-                data-target=".navbar-collapse.show" routerLink="./home/">
+            <a class="nav-item nav-link mr-auto text-primary" data-toggle="collapse" data-target=".navbar-collapse.show"
+                routerLink="./home/">
                 Home
             </a>
 
-            <a class="nav-item nav-link sign-out active text-primary text-uppercase mr-auto" data-toggle="collapse"
-                data-target=".navbar-collapse.show" routerLink="./consumer-list/">
+            <a class="nav-item nav-link mr-auto text-primary" data-toggle="collapse" data-target=".navbar-collapse.show"
+                routerLink="./consumer-list/">
                 Consumers
             </a>
 
-            <a class="nav-item nav-link sign-out active text-primary text-uppercase mr-auto" data-toggle="collapse"
-                data-target=".navbar-collapse.show" routerLink="./transaction-list">
+            <a class="nav-item nav-link mr-auto text-primary" data-toggle="collapse" data-target=".navbar-collapse.show"
+                routerLink="./transaction-list">
                 Transactions
             </a>
 
-            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-register/">
-                Company
-            </a>
+            <li class="nav-item dropdown" *ngIf="!isAuthenticated()">
+                <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Company
+                </a>
 
-            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-handler-register/">
-                Company Handler
-            </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item text-primary" routerLink="./company-register/">Register Company</a>
+                    <div class="dropdown-divider"></div>
 
-            <a *ngIf="!isAuthenticated()" class="nav-item nav-link active text-primary text-uppercase mr-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./company-credential-register/">
-                Company Credential
-            </a>
+                    <a class="dropdown-item text-primary" routerLink="./company-handler-register/">Register Company
+                        Handler</a>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item text-primary" routerLink="./company-credential-register/">Register Company
+                        Credential</a>
+                </div>
+            </li>
         </div>
 
         <div class="navbar-nav ml-auto">
-            <a *ngIf="isAuthenticated()" class="nav-item nav-link sign-out active text-primary text-uppercase ml-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./change-password/">
+
+            <li class="nav-item dropdown" *ngIf="!isAuthenticated()">
+                <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarRightDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sign In
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarRightDropdown">
+                    <a class="dropdown-item text-primary" routerLink="./login/">Login</a>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item text-primary" routerLink="./forgot-password/">Forgot Password</a>
+                </div>
+            </li>
+
+            <a *ngIf="isAuthenticated()" class="text-primary nav-item nav-link ml-auto" data-toggle="collapse"
+                data-target=".navbar-collapse.show" routerLink="./change-password/">
                 Change Password
             </a>
 
-            <a *ngIf="!isAuthenticated()"
-                class="nav-item nav-link active font-weight-bolder text-primary text-uppercase ml-auto"
-                data-toggle="collapse" data-target=".navbar-collapse.show" routerLink="./login/">
-                Sign In
-            </a>
-
-            <a *ngIf="isAuthenticated()"
-                class="nav-item nav-link text-primary font-weight-bolder text-uppercase ml-auto signout"
-                data-toggle="collapse" data-target=".navbar-collapse.show" (click)="operatorSignOut()">
+            <a *ngIf="isAuthenticated()" class="text-primary nav-item nav-link ml-auto signout" data-toggle="collapse"
+                data-target=".navbar-collapse.show" (click)="operatorSignOut()">
                 Hi {{authenticatedUser}}, SIGN OUT
             </a>
         </div>

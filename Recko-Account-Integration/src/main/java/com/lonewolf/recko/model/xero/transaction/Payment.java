@@ -11,6 +11,9 @@ import lombok.Setter;
 @Setter(AccessLevel.NONE)
 public class Payment {
 
+    @JsonProperty("JournalLineID")
+    private String paymentId;
+
     @JsonProperty("AccountID")
     private String accountId;
 

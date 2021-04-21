@@ -50,9 +50,15 @@ export class ConsumerListComponent implements OnInit {
     this.dateAscending = false;
   }
 
+  private resetPagination() {
+    this.currentPage = 1;
+  }
+
   fetchAllConsumers() {
     this.loadedContent--;
+
     this.resetOrderFilters();
+    this.resetPagination();
 
     this.consumerService.getConsumers().subscribe(consumers => {
       this.consumers = consumers;
@@ -80,7 +86,9 @@ export class ConsumerListComponent implements OnInit {
 
   filterPartnerConsumers() {
     this.loadedContent--;
+
     this.resetOrderFilters();
+    this.resetPagination();
 
     this.consumerService.getPartnerConsumers(this.selectedPartner).subscribe(consumers => {
       this.consumers = consumers;
@@ -124,6 +132,8 @@ export class ConsumerListComponent implements OnInit {
     }
 
     this.resetOrderFilters();
+    this.resetPagination();
+
     this.consumers = filteredConsumers;
   }
 

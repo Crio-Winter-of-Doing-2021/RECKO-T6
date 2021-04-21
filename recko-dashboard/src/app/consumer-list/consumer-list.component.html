@@ -36,7 +36,8 @@
         <input type="submit" class="btn btn-primary" value="Filter Consumers" [disabled]="disableFilters()"
             (click)="applyFilters()"> &nbsp;
 
-        <input type="reset" class="btn btn-warning" value="Reset Filters" (click)="resetFilters()">
+        <input type="reset" class="btn btn-warning" value="Reset Filters" [disabled]="disableFilters()"
+            (click)="resetFilters()">
     </form>
     <hr>
 

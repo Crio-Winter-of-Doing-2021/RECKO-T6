@@ -17,5 +17,8 @@ public interface CompanyCredentialRepository extends JpaRepository<CompanyCreden
     @Query("FROM CompanyCredential r WHERE r.partner.name=?1 AND r.company.id = ?2")
     List<CompanyCredential> findByPartner(String partnerName, String companyId);
 
+    @Query("FROM CompanyCredential r WHERE r.company.name = ?1")
+    List<CompanyCredential> findByPartnerName(String partnerName);
+
     boolean existsByApplicationId(String applicationId);
 }

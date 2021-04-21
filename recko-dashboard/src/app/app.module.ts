@@ -19,6 +19,7 @@ import { TransactionComponent } from './transaction-list/transaction/transaction
 import { CompanyRegisterComponent } from './company/company-register/company-register.component';
 import { CompanyHandlerRegisterComponent } from './company/company-handler-register/company-handler-register.component';
 import { CompanyCredentialRegisterComponent } from './company/company-credential-register/company-credential-register.component';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CompanyCredentialRegisterComponent } from './company/company-credential
     TransactionComponent,
     CompanyRegisterComponent,
     CompanyHandlerRegisterComponent,
-    CompanyCredentialRegisterComponent
+    CompanyCredentialRegisterComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

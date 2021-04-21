@@ -44,6 +44,8 @@ public class Utils {
         for (Payment payment : journalEntry.getPayments()) {
             Transaction transaction = new Transaction();
 
+            transaction.setTransactionId(payment.getPaymentId());
+
             transaction.setAccountId(payment.getPaymentDetail().getAccount().getId());
             transaction.setHolderName(payment.getPaymentDetail().getAccount().getHolder());
 
