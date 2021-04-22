@@ -93,6 +93,7 @@ public class RemoteCredentialRegisterService implements RemoteCredentialRegister
         credential.setClientId(companyCredential.getRemoteAccountId().trim());
         credential.setClientSecret(companyCredential.getRemoteAccountSecret().trim());
 
+        credential.setName(companyCredential.getCredentialName().trim());
         credential.setEmail(companyCredential.getEmail().trim());
         credential.setPassword(companyCredential.getPassword().trim());
 

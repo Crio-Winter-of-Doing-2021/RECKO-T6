@@ -25,6 +25,12 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    @GetMapping("/credentials/{companyId}/{partner}")
+    public List<CompanyCredential> controlGetCredentials(@PathVariable String companyId,
+                                                         @PathVariable("partner") PartnerNameRepository nameRepository) {
+        return companyService.getCompanyCredentials(companyId, nameRepository);
+    }
+
     @PostMapping("/register/company")
     public Company controlRegisterNewCompany(@RequestBody Company company) {
         return companyService.registerNewCompany(company);

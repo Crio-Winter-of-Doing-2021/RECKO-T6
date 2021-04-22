@@ -41,7 +41,7 @@ export class CompanyRegisterComponent implements OnInit {
       }
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     })
   }
 

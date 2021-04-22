@@ -17,7 +17,7 @@ import { IReckoPartner } from '../..//models/recko-partner.model';
 export class CompanyCredentialRegisterComponent implements OnInit {
 
   readonly cred: ICompanyCredentialRegister = {
-    applicationId: null, companyId: null, companyPassword: null, email: null, password: null,
+    applicationId: null, credentialName: null, companyId: null, companyPassword: null, email: null, password: null,
     refreshToken: null, remoteAccountId: null, remoteAccountSecret: null, scope: null
   };
 
@@ -38,7 +38,7 @@ export class CompanyCredentialRegisterComponent implements OnInit {
     this.partnerService.getPartners().subscribe((data: IReckoPartner[]) => {
       this.partners = data;
     }, (error: IResponse) => {
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
       this.router.navigate(["home"]);
     })
   }
@@ -58,7 +58,7 @@ export class CompanyCredentialRegisterComponent implements OnInit {
         this.router.navigate(["home"]);
       }, (error: IResponse) => {
         this.isLoading = false;
-        window.alert(error.message);
+        window.alert(error.message || "Unable to Connect to Remote Server");
       });
   }
 

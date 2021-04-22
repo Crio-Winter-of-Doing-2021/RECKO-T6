@@ -12,6 +12,8 @@ public class RegisterCompanyCredential {
 
     private String companyId;
 
+    private String credentialName;
+
     private String companyPassword;
 
     private String remoteAccountId;

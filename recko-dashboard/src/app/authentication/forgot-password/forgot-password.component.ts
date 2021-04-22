@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ReckoAuthService } from '../../services/recko-auth.service';
-import { CompanyService } from 'src/app/services/company.service';
+import { CompanyService } from '../../services/company.service';
 
 import { ICompanyHandler } from '../../models/company-handler.model';
-import { IResponse } from 'src/app/models/response.model';
+import { IResponse } from '../../models/response.model';
 
 @Component({
   selector: 'app-forgot-password',
@@ -38,7 +38,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.roles = roles;
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     });
   }
 
@@ -51,7 +51,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.router.navigate(["login"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     })
   }
 
@@ -64,7 +64,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.router.navigate(["login"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     })
   }
 

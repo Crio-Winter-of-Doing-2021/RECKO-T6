@@ -11,13 +11,13 @@ import java.util.Optional;
 @Repository
 public interface CompanyCredentialRepository extends JpaRepository<CompanyCredential, Long> {
 
-    @Query("FROM CompanyCredential r WHERE r.partner.name=?1 AND r.company.id = ?2 AND lower(r.email)=lower(?3) AND r.password=?4")
-    Optional<CompanyCredential> getCredential(String partnerName, String companyId, String email, String password);
+    @Query("FROM CompanyCredential r WHERE r.id=?1 AND r.partner.name=?2 AND r.company.id=?3 AND lower(r.email)=lower(?4) AND r.password=?5")
+    Optional<CompanyCredential> getCredential(long id, String partnerName, String companyId, String email, String password);
 
-    @Query("FROM CompanyCredential r WHERE r.partner.name=?1 AND r.company.id = ?2")
-    List<CompanyCredential> findByPartner(String partnerName, String companyId);
+    @Query("FROM CompanyCredential r WHERE r.partner.name=?1 AND r.company.id=?2")
+    List<CompanyCredential> findByPartnerInCompany(String partnerName, String companyId);
 
-    @Query("FROM CompanyCredential r WHERE r.company.name = ?1")
+    @Query("FROM CompanyCredential r WHERE r.partner.name=?1")
     List<CompanyCredential> findByPartnerName(String partnerName);
 
     boolean existsByApplicationId(String applicationId);

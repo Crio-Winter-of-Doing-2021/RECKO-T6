@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 
 import { ReckoConsumerService } from '../../services/recko-consumer.service';
 import { ReckoPartnerService } from '../../services/recko-partner.service';
+import { CompanyService } from '../../services/company.service';
 
 import { IReckoConsumer } from '../../models/recko-consumer.model';
 import { IReckoPartner } from '../../models/recko-partner.model';
 import { IResponse } from '../../models/response.model';
 import { StorageKey } from '../../models/storage-key.model';
+import { ICompanyCredential } from '../../models/company-credential.model';
 
 @Component({
   selector: 'app-consumer-form',
@@ -17,20 +19,14 @@ import { StorageKey } from '../../models/storage-key.model';
 export class ConsumerFormComponent implements OnInit {
 
   consumer: IReckoConsumer = {
-    id: null,
-    name: null,
-    amount: null,
-    date: null,
-    type: null,
+    id: null, name: null, amount: null, date: null, type: null,
     credential: {
-      email: null,
-      password: null,
+      id: null, name: null, email: null, password: null,
       company: {
         id: null
       },
       partner: {
-        name: null,
-        description: null
+        name: null, description: null
       }
     }
   };
@@ -39,17 +35,24 @@ export class ConsumerFormComponent implements OnInit {
 
   partners: IReckoPartner[] = [];
   accountTypes: string[] = [];
+  credentials: ICompanyCredential[] = [];
 
   selectedPartner: string = null;
   selectedAccountType: string = null;
+  selectedCredential: number = null;
 
-  constructor(private router: Router, private consumerService: ReckoConsumerService, private partnerService: ReckoPartnerService) {
+  constructor(private router: Router,
+    private consumerService: ReckoConsumerService,
+    private partnerService: ReckoPartnerService,
+    private companyService: CompanyService) {
     const queryParams = this.router.getCurrentNavigation().extras.queryParams;
     if (queryParams) {
       const consumer = <IReckoConsumer>queryParams.consumer;
       this.consumer = consumer;
+
       this.selectedPartner = consumer.credential.partner.name;
       this.selectedAccountType = consumer.type;
+      this.selectedCredential = consumer.credential.id;
     }
 
     this.consumer.credential.company.id = localStorage.getItem(StorageKey.company);
@@ -68,6 +71,11 @@ export class ConsumerFormComponent implements OnInit {
     })
   }
 
+  onPartnerChanged() {
+    this.fetchAccountTypes();
+    this.fetchCompanyCredentials();
+  }
+
   fetchAccountTypes() {
     if (this.selectedPartner !== null) {
       this.consumerService.getConsumerTypes(this.selectedPartner).subscribe((types: string[]) => {
@@ -79,9 +87,21 @@ export class ConsumerFormComponent implements OnInit {
     }
   }
 
+  fetchCompanyCredentials() {
+    if (this.selectedPartner !== null) {
+      this.companyService.fetchCompanyCredentials(this.selectedPartner).subscribe((data: ICompanyCredential[]) => {
+        this.credentials = data;
+      }, (error: IResponse) => {
+        window.alert(error.message);
+        this.router.navigate(["consumer_list"]);
+      })
+    }
+  }
+
   submitConsumer() {
     this.consumer.credential.partner.name = this.selectedPartner;
     this.consumer.type = this.selectedAccountType;
+    this.consumer.credential.id = this.selectedCredential;
     this.isLoading = true;
     (this.consumer.id === null) ? this.addConsumer() : this.updateConsumer();
   }

@@ -34,7 +34,7 @@ public class ConsumerService {
     }
 
     public List<Consumer> getPartnerConsumers(PartnerNameRepository nameRepository, String companyId) {
-        List<CompanyCredential> credentials = credentialRepository.findByPartner(nameRepository.getName(), companyId);
+        List<CompanyCredential> credentials = credentialRepository.findByPartnerInCompany(nameRepository.getName(), companyId);
         if (credentials.isEmpty()) {
             return Collections.emptyList();
         }

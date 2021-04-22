@@ -62,6 +62,7 @@ public class HostConsumerService implements HostConsumerContract {
     public Consumer addConsumer(Consumer consumer) {
         CompanyCredential credential = credentialRepository
                 .getCredential(
+                        consumer.getCredential().getId(),
                         Partner_Name,
                         consumer.getCredential().getCompany().getId(),
                         consumer.getCredential().getEmail(),
@@ -81,6 +82,7 @@ public class HostConsumerService implements HostConsumerContract {
     public Consumer updateConsumer(Consumer consumer) {
         CompanyCredential credential = credentialRepository
                 .getCredential(
+                        consumer.getCredential().getId(),
                         Partner_Name,
                         consumer.getCredential().getCompany().getId(),
                         consumer.getCredential().getEmail(),
@@ -125,6 +127,7 @@ public class HostConsumerService implements HostConsumerContract {
     public boolean deleteConsumer(Consumer consumer) {
         CompanyCredential credential = credentialRepository
                 .getCredential(
+                        consumer.getCredential().getId(),
                         Partner_Name,
                         consumer.getCredential().getCompany().getId(),
                         consumer.getCredential().getEmail(),

@@ -21,8 +21,10 @@ public class CompanyCredential {
     @Column
     @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private long id;
+
+    @Column
+    private String name;
 
     @Column(name = "email")
     private String email;

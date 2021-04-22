@@ -109,6 +109,11 @@ export class ConsumerListComponent implements OnInit {
     const index = this.consumers.indexOf(consumer);
     if (index !== -1) {
       this.consumers.splice(index, 1);
+
+      const filterIndex = this.storedConsumers.indexOf(consumer);
+      if (filterIndex !== -1) {
+        this.storedConsumers.splice(filterIndex, 1);
+      }
     }
   }
 

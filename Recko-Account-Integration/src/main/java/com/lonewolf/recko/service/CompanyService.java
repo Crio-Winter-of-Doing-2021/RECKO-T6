@@ -10,6 +10,7 @@ import com.lonewolf.recko.model.exception.ReckoException;
 import com.lonewolf.recko.model.request.RegisterCompanyCredential;
 import com.lonewolf.recko.model.request.RegisterCompanyHandler;
 import com.lonewolf.recko.repository.AdminRepository;
+import com.lonewolf.recko.repository.CompanyCredentialRepository;
 import com.lonewolf.recko.repository.CompanyRepository;
 import com.lonewolf.recko.repository.ModeratorRepository;
 import com.lonewolf.recko.service.factory.PartnerResolver;
@@ -25,16 +26,19 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyCredentialRepository credentialRepository;
     private final AdminRepository adminRepository;
     private final ModeratorRepository moderatorRepository;
     private final PartnerResolver partnerResolver;
 
     @Autowired
     public CompanyService(CompanyRepository companyRepository,
+                          CompanyCredentialRepository credentialRepository,
                           AdminRepository adminRepository,
                           ModeratorRepository moderatorRepository,
                           PartnerResolver partnerResolver) {
         this.companyRepository = companyRepository;
+        this.credentialRepository = credentialRepository;
         this.adminRepository = adminRepository;
         this.moderatorRepository = moderatorRepository;
         this.partnerResolver = partnerResolver;
@@ -107,6 +111,14 @@ public class CompanyService {
         return Arrays.stream(CompanyHandlerRole.values())
                 .map(CompanyHandlerRole::getName)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<CompanyCredential> getCompanyCredentials(String companyId, PartnerNameRepository nameRepository) {
+        if (companyRepository.findByIdIgnoreCase(companyId).orElse(null) == null) {
+            throw new ReckoException("company doesn't exist", HttpStatus.BAD_REQUEST);
+        }
+
+        return credentialRepository.findByPartnerInCompany(nameRepository.getName(), companyId);
     }
 
     public CompanyCredential registerCompanyCredential(PartnerNameRepository nameRepository,

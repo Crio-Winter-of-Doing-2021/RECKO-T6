@@ -12,6 +12,7 @@ import { IReckoOperatorRegister } from '../models/operator-register.model';
 import { IReckoOperator } from '../models/recko-operator.model';
 import { ICompanyCredentialRegister } from '../models/company-credential-register.model';
 import { ICompanyCredential } from '../models/company-credential.model';
+import { StorageKey } from "../models/storage-key.model";
 
 @Injectable({
     "providedIn": "root"
@@ -43,6 +44,11 @@ export class CompanyService {
     fetchCompanyHandlerRoles(): Observable<string[]> {
         const url = `${this.baseApiUrl}/roles`;
         return this.http.get<string[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
+    }
+
+    fetchCompanyCredentials(partner: string): Observable<ICompanyCredential[]> {
+        const url = `${this.baseApiUrl}/credentials/${localStorage.getItem(StorageKey.company)}/${partner}`;
+        return this.http.get<ICompanyCredential[]>(url, this.httpOptions).pipe(catchError(this.handler.errorHandler));
     }
 
     registerCompanyCredential(newCredential: ICompanyCredentialRegister, partnerName: string): Observable<ICompanyCredential> {

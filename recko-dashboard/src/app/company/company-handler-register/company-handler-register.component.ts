@@ -37,7 +37,7 @@ export class CompanyHandlerRegisterComponent implements OnInit {
     this.companyService.fetchCompanyHandlerRoles().subscribe((roles: string[]) => {
       this.roles = roles;
     }, (error: IResponse) => {
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
       this.router.navigate(["home"]);
     })
   }
@@ -57,7 +57,7 @@ export class CompanyHandlerRegisterComponent implements OnInit {
       this.router.navigate(["home"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     })
   }
 
@@ -75,7 +75,7 @@ export class CompanyHandlerRegisterComponent implements OnInit {
       this.router.navigate(["home"]);
     }, (error: IResponse) => {
       this.isLoading = false;
-      window.alert(error.message);
+      window.alert(error.message || "Unable to Connect to Remote Server");
     })
   }
 

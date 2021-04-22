@@ -4,28 +4,22 @@
             {{ consumer.id === null ? "Add New" : "Update"}} Consumer
         </h1>
 
-        <div class="form-group" *ngIf="consumer.id === null; else immutablePartner">
+        <div class="form-group">
             <label class="text-capitalize font-weight-bolder" for="partner-dropdown">Choose Recko Partner</label>
             <select class="form-control" id="partner-dropdown" required name="partner-dropdown"
-                [(ngModel)]="selectedPartner" (change)="fetchAccountTypes()" #partner="ngModel">
-                <option *ngFor="let partner of  partners" [value]="partner.name">
+                [disabled]="consumer.id !== null" [(ngModel)]="selectedPartner" (change)="onPartnerChanged()"
+                #partner="ngModel">
+                <option *ngFor="let partner of partners" [value]="partner.name">
                     {{partner.description}}
                 </option>
             </select>
 
-            <div *ngIf="partner.touched && partner.invalid">
+            <div *ngIf="consumer.id === null && partner.touched && partner.invalid">
                 <div class="alert alert-danger text-capitalize" *ngIf="partner.errors.required">
                     partner name must be selected
                 </div>
             </div>
         </div>
-
-        <ng-template #immutablePartner>
-            <div class="form-group">
-                <label for="immutablePartner" class="text-capitalize font-weight-bolder">Recko Partner</label>
-                <input type="text" class="form-control" readonly [value]="consumer.credential.partner.description">
-            </div>
-        </ng-template>
 
         <div class="form-group">
             <label for="name" class="text-capitalize font-weight-bolder">Consumer Name</label>
@@ -56,6 +50,23 @@
         </div>
 
         <div *ngIf="selectedPartner !== null">
+
+            <div class="form-group" *ngIf="consumer.id === null">
+                <label class="text-capitalize font-weight-bolder" for="credId">Credential Serial Number</label>
+                <select class="form-control" id="credId" required [disabled]="consumer.id !== null" name="credId"
+                    [(ngModel)]="selectedCredential" #credId="ngModel">
+                    <option *ngFor="let cred of credentials" [value]="cred.id">
+                        {{cred.id}} - {{cred.name}}
+                    </option>
+                </select>
+
+                <div *ngIf="consumer.id === null && credId.touched && credId.invalid">
+                    <div class="alert alert-danger text-capitalize" *ngIf="credId.errors.required">
+                        Credential Must be Selected
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="partnerEmail" class="text-capitalize font-weight-bolder">Partner Email Address</label>
                 <input type="text" class="form-control" id="partnerEmail" required placeholder="Enter Email Address"
